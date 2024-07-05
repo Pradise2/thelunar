@@ -5,11 +5,11 @@ const db = require('./firebase');
 const firebaseAdmin = require('firebase-admin');
 
 const app = express();
-const token = process.env.TOKEN || '7109694153:AAFe_7FE0huybS3EV17KE9taivyTQS11zeI';
+const token = process.env.TOKEN || '7233165030:AAEl_z6x1v9zvGcpMf1TQbpr390_j7SIHJg';
 const bot = new Telegraf(token);
 
 // Web App Link
-const web_link = 'https://lunar-pi-weld.vercel.app/';
+const web_link = 'https://thelunarcoin.vercel.app/';
 
 // Start Handler
 bot.start(async (ctx) => {

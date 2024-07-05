@@ -15,10 +15,10 @@ const Home = () => {
   </div>
 
   <div className="flex space-x-4">
-    <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-12 py-2 text-center">
+    <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center">
       <p className="text-purple-500">0 taps left</p>
     </div>
-    <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-12 py-2 text-center flex items-center space-x-2">
+    <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center flex items-center space-x-2">
       <span className="text-yellow-900">⏰</span>
       <p className="text-yellow-500">01:18:43</p>
     </div>
