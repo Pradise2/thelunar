@@ -42,7 +42,7 @@ const Home = () => {
         </div>
         <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center flex items-center space-x-2">
           <span className="text-yellow-900">⏰</span>
-          <p className="text-red-500">01:18:43</p>
+          <p className="text-red-700">01:18:43</p>
         </div>
       </div>
 
