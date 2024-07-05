@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'golden-moon': '#E5C07B', // Adjusted to a softer, more moon-like gold
+      },
+    },
   },
   plugins: [],
-} 
+}
