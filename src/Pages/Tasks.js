@@ -3,6 +3,7 @@ import Footer from '../Component/Footer'
 
 const Tasks = () => {
   return (
+    <>
     <div class="min-h-screen bg-gradient-to-b from-black to-zinc-900 text-center text-white p-4">
   <h1 class="text-2xl font-bold">Complete the mission, earn the commission!</h1>
   <p class="text-muted-foreground mt-2">But hey, only qualified actions unlock the CEXP galaxy! ✨</p>
@@ -49,10 +50,11 @@ const Tasks = () => {
   </div>
   <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around">
 </div>
-<div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
+    </div>
+    <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
     <Footer />
   </div>
-    </div>
+    </>
   )
 }
 
