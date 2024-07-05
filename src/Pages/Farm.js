@@ -12,7 +12,7 @@ const Farm = () => {
         </div>
         <div className="relative bg-zinc-800 text-card-foreground p-10 rounded-xl w-full max-w-md text-center">
           <p className="text-muted-foreground">Farming era reward</p>
-          <p className="text-4xl  font-bold text-primary">1.77 <span className="text-primary-foreground">CEXP</span></p>
+          <p className="text-4xl  font-bold text-primary">1.77 <span className="text-primary-foreground">LAR</span></p>
         </div>
         <div className="space-y-6 w-full flex items-center flex-col">
         <button className="bg-zinc-800  text-secondary-foreground hover:bg-secondary/80 px-6 py-2 rounded-lg w-full max-w-md">Claim</button>
