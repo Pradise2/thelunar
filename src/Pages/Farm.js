@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from '../Component/Footer';
 
 const Farm = () => {
+  window.Telegram.WebApp.expand();
   return (
     <>
   <div className="min-h-screen bg-zinc-900 text-white flex flex-col items-center p-4 space-y-6">
@@ -12,7 +13,7 @@ const Farm = () => {
   </p>
   <div className="bg-zinc-800 text-secondary-foreground px-4 py-2 rounded-lg text-center">
     Current farming era: 03:59:23
-  </div>
+  </div> 
   <div className="bg-zinc-800 text-card-foreground p-2 rounded-xl w-full max-w-md text-center min-h-[40vh] flex flex-col justify-center space-y-4">
     <p className="text-muted-foreground">Farming era reward</p>
     <p className="text-4xl font-bold text-primary">
