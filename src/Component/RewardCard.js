@@ -11,7 +11,7 @@ const RewardCard = () => {
           </div>
           <h2 class="text-lg font-semibold mb-2">Woo hoo!</h2>
           <p class="text-4xl font-medium text-white mb-2">+56 <span class="text-purple-500">LAR</span></p>
-          <p class="text-center text-gray-300 mb-4">Stay shining, keep grinding, in every cloud, find that silver lining. Get more CEXP!</p>
+          <p class="text-center text-gray-300 mb-4">Stay shining, keep grinding, in every cloud, find that silver lining. Get more LAR!</p>
           <button class="bg-transparent border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-zinc-500 transition-colors">
             Morrrre!
           </button>
