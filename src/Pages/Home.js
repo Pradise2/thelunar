@@ -35,7 +35,7 @@ const Home = () => {
     </div>
   </div>
 
-  <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-3">
+  <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
     <p className="px-3 text-lg">80 <span className="text-purple-400 px-2 text-lg">LAR</span></p>
     <button className="bg-purple-700 p-2 px-3 rounded-lg">
       Claim
