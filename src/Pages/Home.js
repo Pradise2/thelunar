@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from '../Component/Footer';
 
 const Home = () => {
+  window.Telegram.WebApp.expand();
   return (
     <>
    <div className="bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
