@@ -28,10 +28,10 @@ const Home = () => {
   <div className="relative mb-6 pb-6"> 
         <img src="https://placehold.co/200x200" alt="CEXP Coin" className="w-50 h-50 rounded-full" />
     <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 ">
-      <button className="bg-white text-black font-semibold px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
+      <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
     </div>
     <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 pt-3 ml-0"> 
-      <button className="bg-white text-black font-semibold px-4 py-2 rounded-full shadow-lg">MORRR!!!</button>
+      <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">MORRR!!!</button>
     </div>
   </div>
 
