@@ -25,7 +25,7 @@ const Home = () => {
   </div>
 
   <div className="relative mb-6 pb-6"> 
-        <img src="https://placehold.co/200x200" alt="CEXP Coin" className="w-40 h-40 rounded-full" />
+        <img src="https://placehold.co/200x200" alt="CEXP Coin" className="w-50 h-50 rounded-full" />
     <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 ">
       <button className="bg-white text-black font-semibold px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
     </div>
@@ -34,7 +34,7 @@ const Home = () => {
     </div>
   </div>
 
-  <div className="bg-zinc-800 rounded-lg p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-3">
+  <div className="bg-zinc-800 rounded-lg p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
     <p className="px-3 text-lg">80 <span className="text-purple-400 px-2 text-lg">LAR</span></p>
     <button className="bg-purple-700 p-2 px-3 rounded-lg">
       Claim
