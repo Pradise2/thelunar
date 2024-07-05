@@ -13,7 +13,7 @@ const Farm = () => {
   <div className="bg-zinc-800 text-secondary-foreground px-4 py-2 rounded-lg text-center">
     Current farming era: 03:59:23
   </div>
-  <div className="bg-zinc-800 text-card-foreground p-2 rounded-xl w-full max-w-md text-center min-h-[37vh] flex flex-col justify-center space-y-4">
+  <div className="bg-zinc-800 text-card-foreground p-2 rounded-xl w-full max-w-md text-center min-h-[40vh] flex flex-col justify-center space-y-4">
     <p className="text-muted-foreground">Farming era reward</p>
     <p className="text-4xl font-bold text-primary">
       1.77 <span className="text-primary-foreground">LAR</span>
