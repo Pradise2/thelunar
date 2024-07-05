@@ -50,10 +50,10 @@ const Tasks = () => {
   </div>
   <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around">
 </div>
-    </div>
-    <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
+<div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
     <Footer />
   </div>
+    </div>
     </>
   )
 }
