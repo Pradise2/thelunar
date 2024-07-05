@@ -1,8 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
+import Spinner from '../Animation/Spinner';
 
 const Tasks = () => {
   const [isCompleted, setIsCompleted] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Set a timeout to simulate loading time
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Adjust the duration as needed
+
+    // Cleanup the timeout
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner margin={9} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -23,7 +43,7 @@ const Tasks = () => {
             Completed
           </button>
         </div>
-        <div className="mt-6 space-y-4 ">
+        <div className="mt-6 space-y-4">
           {isCompleted && (
             <div className="bg-zinc-800 p-4 rounded-xl flex items-center justify-between">
               <div>
