@@ -20,7 +20,7 @@ const Farm = () => {
     </p>
   </div>
   <div className="space-y-6 w-full flex items-center flex-col">
-    <button className="bg-zinc-800 text-secondary-foreground hover:bg-secondary/80 px-6 py-2 rounded-lg w-full max-w-md">
+    <button className="bg-zinc-800 text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg w-full max-w-md">
       Claim
     </button>
   </div>
