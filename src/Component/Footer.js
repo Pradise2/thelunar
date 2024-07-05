@@ -12,14 +12,15 @@ const Footer = () => {
           <span className="material-icons text-zinc-400">assignment</span>
         Tasks
       </Link>
-      <Link to="/squad"className="flex flex-col items-center">
-      <span className="material-icons text-zinc-400">group</span>
-        Squad
-      </Link>
       <Link to="/farm" className="flex flex-col items-center">
       <span className="material-icons text-zinc-400">paid</span>
         Farm
       </Link>
+      <Link to="/squad"className="flex flex-col items-center">
+      <span className="material-icons text-zinc-400">group</span>
+        Squad
+      </Link>
+      
       </div>
   );
 };
