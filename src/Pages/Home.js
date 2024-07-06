@@ -47,7 +47,7 @@ const Home = () => {
       </div>
 
       <div className="relative mb-6 pb-6">
-        <img src="https://placehold.co/200x200" alt="LAR Coin" className="w-50 h-50 rounded-full" />
+        <img src="https://placehold.co/200x200" alt="LAR Coin" className="w-55 h-56 rounded-full" />
         <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8">
           <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
         </div>
