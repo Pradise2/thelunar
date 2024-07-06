@@ -9,7 +9,7 @@ const Home = () => {
     // Set a timeout to simulate loading time
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // Adjust the duration as needed
+    }, 1000); // Adjust the duration as needed
 
     // Cleanup the timeout
     return () => clearTimeout(timer);
@@ -20,7 +20,8 @@ const Home = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <PulseLoader margin={9} />
+        <PulseLoader margin={9} 
+        background={black}/>
       </div>
     );
   }
@@ -57,7 +58,7 @@ const Home = () => {
       </div>
 
       <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
-        <p className="px-3 text-lg">80 <span className="text-golden-moon px-2 text-lg">LAR</span></p>
+        <p className="px-3 text-4xl font-normal">80 <span className="text-golden-moon px-2 text-4xl font-normal">LAR</span></p>
         <button className="bg-golden-moon p-2 px-3 rounded-lg">
           Claim
         </button>
