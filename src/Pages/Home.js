@@ -20,8 +20,7 @@ const Home = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <PulseLoader margin={9} 
-        background={black}/>
+        <PulseLoader margin={9} />
       </div>
     );
   }
