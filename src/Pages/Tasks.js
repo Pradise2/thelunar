@@ -31,13 +31,13 @@ const Tasks = () => {
         <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br/> LAR galaxy! ✨</p>
         <div className="flex justify-center w-full mt-4">
           <button 
-            className={`py-2 text-zinc-400 text-center text-sm px-14 w-full rounded-2xl ${isCompleted ? 'bg-zinc-800 text-zinc-400' : 'bg-white text-black'}`}
+            className={`py-2 text-zinc-400 text-center text-sm  w-full rounded-2xl ${isCompleted ? 'bg-zinc-800 text-zinc-400' : 'bg-white text-black'}`}
             onClick={() => setIsCompleted(false)}
           >
             New
           </button>
           <button 
-            className={`py-2 text-zinc-400 text-center text-sm px-14 rounded-2xl ${isCompleted ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
+            className={`py-2 text-zinc-400 text-center text-sm w-full rounded-2xl ${isCompleted ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
             onClick={() => setIsCompleted(true)}
           >
             Completed
