@@ -57,7 +57,7 @@ const Home = () => {
       </div>
 
       <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
-        <p className="px-3 text-lg font-normal">80 <span className="text-golden-moon px-2 text-lg font-normal">LAR</span></p>
+        <p className="px-3 text-xl font-normal">80 <span className="text-golden-moon px-2 text-xl font-normal">LAR</span></p>
         <button className="bg-golden-moon p-2 px-3 rounded-lg">
           Claim
         </button>
