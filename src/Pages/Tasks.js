@@ -48,7 +48,7 @@ const Tasks = () => {
             <div className="bg-zinc-800 p-4 rounded-xl flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold">Join YouTube</h2>
-                <p className="text-primary text-gold-400">10'000 LAR</p>
+                <p className="text-primary text-golden-moon">10'000 LAR</p>
               </div>
               <div className="flex items-center space-x-2">
                 <button className="bg-primary text-primary-foreground py-2 px-4 rounded-lg">Go</button>
@@ -61,37 +61,37 @@ const Tasks = () => {
               <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
                   <p className="font-semibold">Invite 5 Friends</p>
-                  <p className="text-gold-400">15'000 LAR</p>
+                  <p className="text-golden-moon">15'000 LAR</p>
                 </div>
-                <button className="bg-purple-600 text-white py-2 px-4 rounded-full">Start</button>
+                <button className="bg-golden-moon text-white py-2 px-4 rounded-full">Start</button>
               </div>
               <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
                   <p className="font-semibold">Invite 10 Friends</p>
-                  <p className="text-gold-400">25'000 LAR</p>
+                  <p className="text-golden-moon">25'000 LAR</p>
                 </div>
-                <button className="bg-purple-600 text-white py-2 px-4 rounded-full">Start</button>
+                <button className="bg-golden-moon text-white py-2 px-4 rounded-full">Start</button>
               </div>
               <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
                   <p className="font-semibold">Invite 20 Friends</p>
-                  <p className="text-gold-400">50'000 LAR</p>
+                  <p className="text-golden-moon">50'000 LAR</p>
                 </div>
-                <button className="bg-purple-600 text-white py-2 px-4 rounded-full">Start</button>
+                <button className="bg-golden-moon text-white py-2 px-4 rounded-full">Start</button>
               </div>
               <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
                   <p className="font-semibold">Invite 50 Friends</p>
-                  <p className="text-gold-400">200'000 LAR</p>
+                  <p className="text-golden-moon">200'000 LAR</p>
                 </div>
-                <button className="bg-purple-600 text-white py-2 px-4 rounded-full">Start</button>
+                <button className="bg-golden-moon text-white py-2 px-4 rounded-full">Start</button>
               </div>
               <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
                   <p className="font-semibold">Invite 100 Friends</p>
-                  <p className="text-gold-400">500'000 LAR</p>
+                  <p className="text-golden-moon">500'000 LAR</p>
                 </div>
-                <button className="bg-purple-600 text-white py-2 px-4 rounded-full">Start</button>
+                <button className="bg-golden-moon text-white py-2 px-4 rounded-full">Start</button>
               </div>
             </>
           )}
@@ -99,7 +99,7 @@ const Tasks = () => {
         <div className="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around">
           {/* Footer content */}
         </div>
-        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
+        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-slate-500 py-1">
           <Footer />
         </div>
       </div>
