@@ -40,13 +40,13 @@ const Squad = () => {
       <h1 className="text-center text-4xl font-normal">
         The bigger the tribe, <br/> the better the vibe!
       </h1>
-      <div className="bg-zinc-800 p-4 rounded-lg w-full max-w-md space-y-2">
+      <div className="bg-zinc-800 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center ">Total squad balance</p>
         <p className="text-center text-3xl font-normal">
           41’753.81 <span className="text-golden-moon">LAR</span>
         </p>
       </div>
-      <div className="bg-zinc-800 p-4 rounded-lg w-full max-w-md space-y-2 ">
+      <div className="bg-zinc-800 p-4 rounded-xl w-full max-w-md space-y-2 ">
         <p className="text-zinc-400 text-center ">Your rewards</p>
         <p className="text-center text-3xl font-normal">
           5.60 <span className="text-golden-moon">LAR</span>
@@ -56,7 +56,7 @@ const Squad = () => {
           <button className="bg-golden-moon  px-4 py-2 rounded-xl ">Claim</button>
         </div>
         </div>
-      <div className="bg-zinc-800 p-4 rounded-lg w-full max-w-md space-y-2">
+      <div className="bg-zinc-800 p-4 rounded-xl w-full max-w-md space-y-2">
         <div className="flex justify-between text-sm items-center bg-zinc-700 rounded-lg py-2 px-3">
           <p className=" flex items-center">
             <img aria-hidden="true" alt="team-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👥" className="mr-2" />

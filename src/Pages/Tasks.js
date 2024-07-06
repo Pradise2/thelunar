@@ -52,7 +52,7 @@ const Tasks = () => {
                   <p className="text-primary text-golden-moon">10'000 LAR</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="bg-primary text-primary-foreground py-2 px-4 rounded-lg">Go</button>
+                  <button className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">Go</button>
                   <img aria-hidden="true" alt="check-mark" src="https://openui.fly.dev/openui/24x24.svg?text=✔" />
                 </div>
               </div>
