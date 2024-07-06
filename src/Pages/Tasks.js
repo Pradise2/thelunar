@@ -98,7 +98,7 @@ const Tasks = () => {
             )}
           </div>   
         </div>
-          <div className="w-full max-w-md fixed bottom-0 bg-zinc-900 left-0 flex justify-around py-1">
+          <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900  justify-around py-1">
         <Footer />
         </div>
       </div>
