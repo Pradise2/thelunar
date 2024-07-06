@@ -62,7 +62,7 @@ const Home = () => {
           Claim
         </button>
       </div>
-      <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
+      <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900  py-1">
         <Footer />
       </div>
     </div>
