@@ -28,7 +28,7 @@ const Home = () => {
   return (
     <div className="bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
       <div className="bg-zinc-800 rounded-lg p-4 w-full max-w-md text-center">
-        <p className="text-zinc-400">Your Lunar Tokens</p>
+        <p className="text-zinc-500">Your Lunar Tokens</p>
         <p className="text-4xl font-normal">22’128.42 <span className="text-golden-moon">LAR</span></p>
       </div>
       <div className="text-center">

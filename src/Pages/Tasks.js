@@ -27,17 +27,17 @@ const Tasks = () => {
   return (
     <>
       <div className="min-h-screen bg-gradient-to-b from-black to-zinc-900 text-center text-white p-4">
-        <h1 className="text-2xl font-bold">Complete the mission, earn the commission!</h1>
-        <p className="text-muted-foreground mt-2">But hey, only qualified actions unlock the LAR galaxy! ✨</p>
-        <div className="flex justify-center mt-4">
+        <h1 className="text-2xl font-bold">Complete the mission,<br/> earn the commission!</h1>
+        <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br/> LAR galaxy! ✨</p>
+        <div className="flex justify-center w-full mt-4">
           <button 
-            className={`py-2 px-4 rounded-l-full ${isCompleted ? 'bg-zinc-800 text-zinc-400' : 'bg-white text-black'}`}
+            className={`py-2 text-zinc-800 text-center text-sm px-14 rounded-2xl ${isCompleted ? 'bg-zinc-800 text-zinc-400' : 'bg-white text-black'}`}
             onClick={() => setIsCompleted(false)}
           >
             New
           </button>
           <button 
-            className={`py-2 px-4 rounded-r-full ${isCompleted ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
+            className={`py-2 text-zinc-400 text-center text-sm px-14 rounded-2xl ${isCompleted ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
             onClick={() => setIsCompleted(true)}
           >
             Completed
@@ -99,7 +99,7 @@ const Tasks = () => {
         <div className="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around">
           {/* Footer content */}
         </div>
-        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900 py-1">
+        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
           <Footer />
         </div>
       </div>

@@ -37,39 +37,39 @@ const Squad = () => {
 
   return (
     <div className="min-h-screen bg-zinc-900 text-white p-4 flex flex-col items-center space-y-6">
-      <h1 className="text-center text-xl font-bold">
-        The bigger the tribe, the better the vibe!
+      <h1 className="text-center text-4xl font-normal">
+        The bigger the tribe, <br/> the better the vibe!
       </h1>
       <div className="bg-zinc-800 p-4 rounded-lg w-full max-w-md space-y-2">
-        <p className="text-muted-foreground text-center font-light">Total squad balance</p>
-        <p className="text-center text-3xl font-semi-bold">
-          41’753.81 <span className="text-primary">LAR</span>
+        <p className="text-zinc-400 text-center ">Total squad balance</p>
+        <p className="text-center text-3xl font-normal">
+          41’753.81 <span className="text-golden-moon">LAR</span>
         </p>
       </div>
       <div className="bg-zinc-800 p-4 rounded-lg w-full max-w-md space-y-2 ">
-        <p className="text-muted-foreground text-center font-light">Your rewards</p>
-        <p className="text-center text-3xl font-semibold">
-          5.60 <span className="text-primary">LAR</span>
+        <p className="text-zinc-400 text-center ">Your rewards</p>
+        <p className="text-center text-3xl font-normal">
+          5.60 <span className="text-golden-moon">LAR</span>
         </p>
-        <p className="text-muted-foreground mb-4 text-center ">10% of your friends earnings</p>
-        <div className="flex justify-center">
-          <button className="bg-golden-moon px-4 py-2 rounded-lg inline-block">Claim</button>
+        <p className="text-sm mb-4 text-center ">10% of your friends earnings</p>
+        <div className="flex p-1 justify-center">
+          <button className="bg-golden-moon  px-4 py-2 rounded-xl ">Claim</button>
         </div>
         </div>
       <div className="bg-zinc-800 p-4 rounded-lg w-full max-w-md space-y-2">
-        <div className="flex justify-between items-center bg-zinc-700 rounded-lg py-2 px-3">
-          <p className="text-muted-foreground flex items-center">
+        <div className="flex justify-between text-sm items-center bg-zinc-700 rounded-lg py-2 px-3">
+          <p className=" flex items-center">
             <img aria-hidden="true" alt="team-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👥" className="mr-2" />
             Your team
           </p>
-          <p className="text-muted-foreground">1 users</p>
+          <p>1 users</p>
         </div>
-        <div className="flex justify-between items-center px-3">
+        <div className="flex font-normal justify-between items-center px-3">
           <p className="flex items-center">
             <img aria-hidden="true" alt="user-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👤" className="mr-2" />
             Akin Ola
           </p>
-          <p className="text-primary">56.00 LAR</p>
+          <p className="text-primary">56.00 <span className="text-golden-moon">LAR</span> </p>
         </div>
       </div>
       <div className="w-full max-w-md flex space-x-2 mt-5">
