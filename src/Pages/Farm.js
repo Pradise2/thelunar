@@ -11,17 +11,17 @@ const Farm = () => {
     Level up with token farming!<br />
     Claim LAR and keep the farm poppin!
   </p>
-  <div className="bg-zinc-800 text-red-700 px-4 py-2 rounded-lg text-center">
+  <div className="bg-zinc-800 text-red-700 w-full max-w-md px-4 py-2 rounded-xl text-center">
     Current farming era:<span className="text-yellow-900">⏰</span> 03:59:23
   </div> 
-  <div className="bg-zinc-800 text-card-foreground p-2 rounded-xl w-full max-w-md text-center min-h-[40vh] flex flex-col justify-center space-y-4">
+  <div className="bg-zinc-800 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[40vh] flex flex-col justify-center space-y-4">
     <p className="text-zinc-400 text-muted-foreground">Farming era reward</p>
     <p className="text-4xl font-normal text-primary">
       1.77 <span className="text-golden-moon">LAR</span>
     </p>
   </div>
   <div className="space-y-6 w-full flex items-center flex-col">
-    <button className="bg-zinc-800  text-zinc-400 hover:bg-secondary/80 px-6 py-3 rounded-lg w-full max-w-md">
+    <button className="bg-zinc-800  text-zinc-400 hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md">
       Claim
     </button>
   </div>
