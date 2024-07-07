@@ -15,7 +15,9 @@ const Home = () => {
   const tapButtonShowCount = 3; // Show TAP-TAP-TAP button after 3 clicks
   const morrButtonShowCount = 6; // Show MORRR!!! button after 6 clicks
 
-
+  useEffect(() => {
+    window.Telegram.WebApp.expand();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -160,12 +162,12 @@ const Home = () => {
       </div>
 
       <div className="flex space-x-4">
-        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center">
-          <p className="text-golden-moon">{userData?.TapPoint} taps left</p>
+        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-12 py-2 text-center">
+          <p className="text-golden-moon">{userData?.TapPoint} taps </p>
         </div>
         <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center flex items-center space-x-2">
           <span className="text-yellow-900">⏰</span>
-          <p className="text-red-700"><FormattedTime time={userData?.TapTime} /></p>
+          <p className="text-red-700"><FormattedTime time={userData?.TapTime}/></p>
         </div>
       </div>
 
