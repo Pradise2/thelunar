@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+import React, { useState } from 'react';
+import Footer from '../Component/Footer';
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+const Tasks = () => {
+  const [isCompleted, setIsCompleted] = useState(false);
 
-## Available Scripts
+  return (
+    <>
+      <div className="min-h-screen bg-gradient-to-b from-black to-zinc-900 text-center text-white p-4">
+        <h1 className="text-2xl font-bold">Complete the mission, earn the commission!</h1>
+        <p className="text-muted-foreground mt-2">But hey, only qualified actions unlock the LAR galaxy! ✨</p>
+        <div className="flex justify-center mt-4">
+          <button 
+            className={`py-2 px-4 rounded-l-full ${isCompleted ? 'bg-zinc-800 text-zinc-400' : 'bg-white text-black'}`}
+            onClick={() => setIsCompleted(false)}
+          >
+            New
+          </button>
+          <button 
+            className={`py-2 px-4 rounded-r-full ${isCompleted ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
+            onClick={() => setIsCompleted(true)}
+          >
+            Completed
+          </button>
+        </div>
+        <div className="mt-6 space-y-4 ">
+          <div className="bg-zinc-800 p-4 rounded-lg flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Join YouTube</h2>
+              <p className="text-primary text-blue-400">10'000 LAR</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button className="bg-primary text-primary-foreground py-2 px-4 rounded-lg">Go</button>
+              <img aria-hidden="true" alt="check-mark" src="https://openui.fly.dev/openui/24x24.svg?text=✔" />
+            </div>
+          </div>
+          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
+            <div>
+              <p className="font-semibold">Invite 5 Friends</p>
+              <p className="text-blue-400">15'000 LAR</p>
+            </div>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
+          </div>
+          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
+            <div>
+              <p className="font-semibold">Invite 10 Friends</p>
+              <p className="text-blue-400">25'000 LAR</p>
+            </div>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
+          </div>
+          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
+            <div>
+              <p className="font-semibold">Invite 20 Friends</p>
+              <p className="text-blue-400">50'000 LAR</p>
+            </div>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
+          </div>
+          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
+            <div>
+              <p className="font-semibold">Invite 50 Friends</p>
+              <p className="text-blue-400">200'000 LAR</p>
+            </div>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
+          </div>
+          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
+            <div>
+              <p className="font-semibold">Invite 100 Friends</p>
+              <p className="text-blue-400">500'000 LAR</p>
+            </div>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">S tart</button>
+          </div>
+        </div>
+        <div className="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around">
+          {/* Footer content */}
+        </div>
+        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
+          <Footer />
+        </div>
+      </div>
+    </>
+  );
+}
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default Tasks;
