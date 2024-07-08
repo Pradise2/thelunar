@@ -165,7 +165,7 @@ const Home = () => {
         <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center">
           <p className="text-golden-moon">{userData?.TapPoint} taps </p>
         </div>
-        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center flex items-center space-x-2">
+        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-7 py-2 text-center flex items-center space-x-2">
           <span className="text-yellow-900">⏰</span>
           <p className="text-red-700"><FormattedTime time={userData?.TapTime}/></p>
         </div>
