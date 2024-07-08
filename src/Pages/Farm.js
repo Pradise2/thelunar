@@ -1,20 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
-import { addUserToFarm, getUserFromFarm } from '../utils/firestoreFunctions';
+import { addUserToFarm, getUserFromFarm, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
 import FormattedTime from '../Component/FormattedTime';
-import { PulseLoader } from 'react-spinners';
 
 const Farm = () => {
   const [userData, setUserData] = useState(null);
+  const [homeData, setHomeData] = useState(null);
   const [userId, setUserId] = useState("12345");
-  const [loading, setLoading] = useState(true);
   const [buttonText, setButtonText] = useState("Start");
 
   useEffect(() => {
     const fetchUserData = async () => {
       const data = await getUserFromFarm(userId);
       if (data) {
-        setUserData(data);
+        const currentTime = Math.floor(Date.now() / 1000);
+        const elapsed = currentTime - data.LastFarmActiveTime;
+
+        if (elapsed > 0) {
+          const newFarmTime = data.FarmTime - elapsed;
+          if (newFarmTime <= 0) {
+            setUserData({
+              ...data,
+              FarmTime: 0,
+              FarmReward: data.FarmReward + data.FarmTime * 0.1,
+              LastFarmActiveTime: currentTime,
+            });
+            setButtonText("Claim");
+          } else {
+            setUserData({
+              ...data,
+              FarmTime: newFarmTime,
+              FarmReward: data.FarmReward + elapsed * 0.1,
+              LastFarmActiveTime: currentTime,
+            });
+            setButtonText("Farming...");
+          }
+        }
       } else {
         const initialData = {
           FarmTime: 60,
@@ -24,10 +45,18 @@ const Farm = () => {
         await addUserToFarm(userId, initialData);
         setUserData(initialData);
       }
-      setLoading(false);
     };
 
     fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      const data = await getUserFromHome(userId);
+      setHomeData(data);
+    };
+
+    fetchHomeData();
   }, [userId]);
 
   useEffect(() => {
@@ -67,40 +96,46 @@ const Farm = () => {
   }, [buttonText, userData]);
 
   useEffect(() => {
-    const handleBeforeUnload = (e) => {
+    const saveUserData = async () => {
       if (userId && userData) {
-        addUserToFarm(userId, userData);
-        e.preventDefault();
-        e.returnValue = '';
+        await addUserToFarm(userId, userData);
       }
+    };
+
+    const handleBeforeUnload = (e) => {
+      saveUserData();
+      e.preventDefault();
+      e.returnValue = '';
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
+    const saveInterval = setInterval(saveUserData, 10000); // Save user data every 10 seconds
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      if (userId && userData) {
-        addUserToFarm(userId, userData);
-      }
+      clearInterval(saveInterval);
+      saveUserData();
     };
   }, [userId, userData]);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (buttonText === "Start") {
       setButtonText("Farming...");
       setUserData((prevState) => ({
         ...prevState,
         LastFarmActiveTime: Math.floor(Date.now() / 1000),
       }));
+    } else if (buttonText === "Claim" && homeData) {
+      const newHomeBalance = homeData.HomeBalance + userData.FarmReward;
+      await updateHomeBalance(userId, newHomeBalance);
+      setUserData((prevState) => ({
+        ...prevState,
+        FarmReward: 0,
+        FarmTime: 60,
+      }));
+      setButtonText("Start");
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <PulseLoader margin={9} />
-      </div>
-    );
-  }
 
   return (
     <>
@@ -120,8 +155,8 @@ const Farm = () => {
           </p>
         </div>
         <div className="space-y-6 w-full flex items-center flex-col">
-          <button 
-            className="bg-golden-moon text-white hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md"
+          <button
+            className={`text-white hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-zinc-800" : "bg-golden-moon"}`}
             onClick={handleButtonClick}
           >
             {buttonText}

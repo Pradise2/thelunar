@@ -10,7 +10,7 @@ const Squad = () => {
   }, []);
 
   const copyToClipboard = () => {
-    const reflink = `https://t.me/yourcoinhot_bot?start=ref_${userId}`;
+    const reflink = `https://t.me/ThelunarCoin_bot?start=ref_${userId}`;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(reflink).then(() => {

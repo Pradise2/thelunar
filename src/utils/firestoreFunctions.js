@@ -1,6 +1,6 @@
 // src/firestoreFunctions.js
 import { db } from './firebaseConfig';
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore"; 
 
 // Home Collection Functions
 export const addUserToHome = async (userId, userData) => {
@@ -17,6 +17,13 @@ export const getUserFromHome = async (userId) => {
     console.log("No such document!");
     return null;
   }
+};
+
+export const updateHomeBalance = async (userId, newBalance) => {
+  const userRef = doc(db, "Home", userId);
+  await updateDoc(userRef, {
+    HomeBalance: newBalance,
+  });
 };
 
 // Tasks Collection Functions
