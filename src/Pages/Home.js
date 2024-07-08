@@ -27,8 +27,8 @@ const Home = () => {
       } else {
         const initialData = {
           HomeBalance: 0,
-          TapPoint: 10,
-          TapTime: 30,
+          TapPoint: 1000,
+          TapTime: 300,
           TapClaim: 0,
           LastActiveTime: Math.floor(Date.now() / 1000),
         };
@@ -51,8 +51,8 @@ const Home = () => {
           if (newTapTime <= 0) {
             setUserData((prevState) => ({
               ...prevState,
-              TapTime: 30,
-              TapPoint: 10,
+              TapTime: 300,
+              TapPoint: 1000,
               LastActiveTime: currentTime,
             }));
           } else {
@@ -94,7 +94,7 @@ const Home = () => {
     if (userData.TapPoint > 0) {
       // Trigger vibration
       if (navigator.vibrate) {
-        navigator.vibrate(100); // Vibrate for 100ms
+        navigator.vibrate(1000); // Vibrate for 100ms
       }
   
       // Update TapPoint and TapClaim
