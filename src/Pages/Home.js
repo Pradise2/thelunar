@@ -139,7 +139,7 @@ const Home = () => {
   const handleClaim = () => {
     // Vibrate when claiming
     if (navigator.vibrate) {
-      navigator.vibrate(200); // Vibrate for 200ms
+      navigator.vibrate(500); // Vibrate for 500ms
     }
 
     // Show RewardCard and update userData
