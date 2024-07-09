@@ -9,7 +9,7 @@ import RCFarm from '../Component/RCFarm';
 const Farm = () => {
   const [userData, setUserData] = useState(null);
   const [homeData, setHomeData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState();
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
 
@@ -20,7 +20,6 @@ const Farm = () => {
       const user = window.Telegram.WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
-       
       } else {
         console.error('User data is not available.');
       }
@@ -146,8 +145,13 @@ const Farm = () => {
         LastFarmActiveTime: Math.floor(Date.now() / 1000),
       }));
     } else if (buttonText === "Claim" && homeData) {
-      const newHomeBalance = homeData.HomeBalance + userData.FarmReward;
+      try {
+      const newHomeBalance =  + userData.FarmReward;
       await updateHomeBalance(userId, newHomeBalance);
+      setHomeData((prevState) => ({
+        ...prevState,
+        HomeBalance: newHomeBalance,
+      }));
       setUserData((prevState) => ({
         ...prevState,
         FarmReward: 0,
@@ -155,12 +159,16 @@ const Farm = () => {
       }));
       setShowRCFarm(true);
 
-    // Hide RewardCard after 2 seconds
-    setTimeout(() => setShowRCFarm(false), 2000);
+      // Hide RewardCard after 2 seconds
+      setTimeout(() => setShowRCFarm(false), 2000);
       setButtonText("Start");
-    }
+    } catch (error) {
+      console.error('Error claiming reward:', error);
+    }}
+
   };
 
+ 
   return (
     <>
       <div className="min-h-screen bg-cover text-white flex flex-col items-center p-4 space-y-6">
@@ -201,7 +209,7 @@ const Farm = () => {
         )}
       </AnimatePresence>
         <div className="w-full max-w-md bg-zinc-900 fixed bottom-0 left-0 flex justify-around py-1">
-          <Footer />
+          <Footer/>
         </div>
       </div>
     </>
@@ -209,3 +217,4 @@ const Farm = () => {
 };
 
 export default Farm;
+

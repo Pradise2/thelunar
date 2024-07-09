@@ -3,23 +3,40 @@ import Footer from '../Component/Footer';
 import './Spinner.css';
 import { addUserTasks, getUserTasks, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
 import './bg.css';
+import RCTasks from '../Component/RCTasks'
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("12345"); // Replace with dynamic ID if possible
-  const [taskFilter, setTaskFilter] = useState('new'); // 'new' or 'completed'
-  const [loadingTask, setLoadingTask] = useState(null); // New state for loading status
-  const [claimableTasks, setClaimableTasks] = useState({}); // State to track claimable tasks
-  const [homeBalance, setHomeBalance] = useState(0); // State to track home balance
-
-  window.Telegram.WebApp.expand();
+  const [userId, setUserId] = useState(); // Replace with dynamic ID if possible
+  const [taskFilter, setTaskFilter] = useState('new');
+  const [loadingTask, setLoadingTask] = useState(null);
+  const [homeData, setHomeData] = useState(null);
+  const [taskReadyToClaim, setTaskReadyToClaim] = useState(null);
+  const [showRCTasks, setShowRCTasks] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null); // New state for selected task
 
   const tasks = [
     { id: 1, title: 'Invite 5 Friends', reward: 15000, link: "https://youtube.com" },
     { id: 2, title: 'Complete Profile', reward: 5000, link: "https://example.com" },
     { id: 3, title: 'Join Community', reward: 10000, link: "https://example.com" },
-    // Add more tasks as needed
   ];
+
+  window.Telegram.WebApp.expand();
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserId(user.id);
+       
+      } else {
+        console.error('User data is not available.');
+      }
+    } else {
+      console.error('Telegram WebApp script is not loaded.');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,18 +49,15 @@ const Tasks = () => {
           }
         } else {
           const initialData = {
-            taskFilter: 'new',
-            TasksClaim: {},
             TasksComplete: {},
-            TasksStatus: []
+            TasksStatus: {},
           };
+          tasks.forEach(task => {
+            initialData.TasksComplete[task.id] = false; // Set each task's TasksComplete to false initially
+            initialData.TasksStatus[task.id] = 'start'; // Set each task's TasksStatus to 'start' initially
+          });
           await addUserTasks(userId, initialData);
           setUserData(initialData);
-        }
-
-        const homeData = await getUserFromHome(userId);
-        if (homeData && homeData.homeBalance !== undefined) {
-          setHomeBalance(homeData.homeBalance);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -51,6 +65,15 @@ const Tasks = () => {
     };
 
     fetchData();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      const data = await getUserFromHome(userId);
+      setHomeData(data);
+    };
+
+    fetchHomeData();
   }, [userId]);
 
   useEffect(() => {
@@ -71,7 +94,7 @@ const Tasks = () => {
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
-    const saveInterval = setInterval(saveUserData, 10000); // Save user data every 10 seconds
+    const saveInterval = setInterval(saveUserData, 10000);
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -80,59 +103,74 @@ const Tasks = () => {
     };
   }, [userId, userData]);
 
-  useEffect(() => {
-    if (userData) {
-      const updatedData = { ...userData, taskFilter };
-      setUserData(updatedData);
-    }
-  }, [taskFilter]);
+  const handleClaimClick = async (taskId, reward) => {
+    const task = tasks.find(t => t.id === taskId);
 
-  const handleStartClick = (taskId, taskLink) => {
-    setLoadingTask(taskId);
-    setTimeout(() => {
-      setLoadingTask(null);
-      setClaimableTasks(prevState => ({ ...prevState, [taskId]: true }));
-      window.location.href = taskLink;
-    }, 10000);
+    // Update TasksComplete to true for the clicked task
+    setUserData(prevData => ({
+      ...prevData,
+      TasksComplete: {
+        ...prevData.TasksComplete,
+        [taskId]: true,
+      },
+      TasksStatus: {
+        ...prevData.TasksStatus,
+        [taskId]: 'completed',
+      }
+    }));
+
+    // Update HomeBalance with the reward
+    try {
+      const updatedHomeData = await getUserFromHome(userId); // Fetch latest home data to ensure up-to-date balance
+      const newHomeBalance = updatedHomeData.HomeBalance + reward;
+      await updateHomeBalance(userId, newHomeBalance);
+      setHomeData(prevData => ({
+        ...prevData,
+        HomeBalance: newHomeBalance,
+      }));
+      setSelectedTask(task); // Set the selected task
+      setShowRCTasks(true);
+
+      // Hide RewardCard after 2 seconds
+      setTimeout(() => setShowRCTasks(false), 2000);
+
+      console.log(`HomeBalance updated with ${reward} LAR`);
+    } catch (error) {
+      console.error('Error updating HomeBalance:', error);
+    }
   };
 
-  const handleClaimClick = async (taskId, reward) => {
-    try {
-      const updatedTasksClaim = { ...userData.TasksClaim, [taskId]: true };
-      const updatedTasksComplete = { ...userData.TasksComplete, [taskId]: true };
-      const updatedTasksStatus = [...userData.TasksStatus, { id: taskId, status: 'completed' }];
+  const handleStartClick = (taskId, link) => {
+    setLoadingTask(taskId);
 
-      const updatedUserData = { 
-        ...userData, 
-        TasksClaim: updatedTasksClaim, 
-        TasksComplete: updatedTasksComplete, 
-        TasksStatus: updatedTasksStatus 
-      };
-      setUserData(updatedUserData);
+    // Open the link in a new tab
+    window.open(link, '_blank');
 
-      const newBalance = homeBalance + reward;
-      setHomeBalance(newBalance);
-      await updateHomeBalance(userId, newBalance);
-
-      setTaskFilter('completed');
-      setClaimableTasks(prevState => ({ ...prevState, [taskId]: false }));
-    } catch (error) {
-      console.error('Error claiming task:', error);
-    }
+    // Simulate loading delay
+    setTimeout(() => {
+      setLoadingTask(null);
+      setTaskReadyToClaim(taskId);
+      setUserData(prevData => ({
+        ...prevData,
+        TasksStatus: {
+          ...prevData.TasksStatus,
+          [taskId]: 'claim',
+        }
+      }));
+    }, 5000); // Simulate loading time, change as needed
   };
 
   const filteredTasks = tasks.filter(task => {
     if (taskFilter === 'new') {
-      return !userData?.TasksComplete?.[task.id];
+      return userData && userData.TasksStatus[task.id] !== 'completed';
+    } else if (taskFilter === 'completed') {
+      return userData && userData.TasksStatus[task.id] === 'completed';
     }
-    if (taskFilter === 'completed') {
-      return userData?.TasksComplete?.[task.id];
-    }
-    return false;
+    return true;
   });
 
   return (
-    <div className=" bg-cover min-h-screen flex flex-col">
+    <div className="bg-cover min-h-screen flex flex-col">
       <div className="flex-grow overflow-y-auto bg-cover text-center text-white p-4">
         <h1 className="text-2xl font-bold">Complete the mission,<br /> earn the commission!</h1>
         <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
@@ -161,23 +199,33 @@ const Tasks = () => {
                 <p className="text-golden-moon">{task.reward.toLocaleString()} LAR</p>
               </div>
               <div className="flex items-center space-x-2">
-                {claimableTasks[task.id] ? (
-                  <button 
-                    onClick={() => handleClaimClick(task.id, task.reward)} 
-                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                  >
-                    Claim
-                  </button>
-                ) : (
+                {userData.TasksStatus[task.id] === 'start' && (
                   <button 
                     onClick={() => handleStartClick(task.id, task.link)} 
                     className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                    disabled={loadingTask === task.id}
                   >
                     {loadingTask === task.id ? (
                       <div className="spinner-border spinner-border-sm"></div>
                     ) : (
                       'Start'
                     )}
+                  </button>
+                )}
+                {userData.TasksStatus[task.id] === 'claim' && (
+                  <button 
+                    onClick={() => handleClaimClick(task.id, task.reward)} 
+                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                  >
+                    Claim
+                  </button>
+                )}
+                {userData.TasksStatus[task.id] === 'completed' && (
+                  <button 
+                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                    disabled
+                  >
+                    Completed
                   </button>
                 )}
                 <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
@@ -188,6 +236,22 @@ const Tasks = () => {
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {showRCTasks && selectedTask && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+            onClick={() => setShowRCTasks(false)} // Click anywhere to close RewardCard
+          >
+            <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
         <Footer />
       </div>
@@ -196,3 +260,4 @@ const Tasks = () => {
 };
 
 export default Tasks;
+

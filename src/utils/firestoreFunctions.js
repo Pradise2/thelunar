@@ -28,7 +28,7 @@ export const updateHomeBalance = async (userId, newBalance) => {
 
 // Tasks Collection Functions
 export const addUserTasks = async (userId, tasks) => {
-  await setDoc(doc(db, "Tasks", userId.toString()), { Tasks: tasks });
+  await setDoc(doc(db, "Tasks", userId.toString()),  tasks );
 };
 
 export const getUserTasks = async (userId) => {

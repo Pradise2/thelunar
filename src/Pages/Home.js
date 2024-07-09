@@ -11,7 +11,7 @@ import './bg.css'
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState();
   const [loading, setLoading] = useState(true);
   const [showTapButton, setShowTapButton] = useState(false);
   const [showMorrButton, setShowMorrButton] = useState(false);
@@ -22,9 +22,7 @@ const Home = () => {
   const tapButtonShowCount = 12; // Show TAP-TAP-TAP button after 3 clicks
   const morrButtonShowCount = 20; // Show MORRR!!! button after 6 clicks
 
-  useEffect(() => {
-    window.Telegram.WebApp.expand();
-  }, []);
+  window.Telegram.WebApp.expand();
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
