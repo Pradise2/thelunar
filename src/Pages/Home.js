@@ -4,17 +4,19 @@ import { PulseLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
 import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
 import './Home.css'; // Make sure to import the CSS file
-import coin from './coin1.png'
-import './bg.css'
-import './imgv.css'
+import coin from './coin1.png';
+import './bg.css';
+import './imgv.css';
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("12345"); 
+  const [userId, setUserId] = useState("12345");
   const [loading, setLoading] = useState(true);
   const [showTapButton, setShowTapButton] = useState(false);
   const [showMorrButton, setShowMorrButton] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [vibrate, setVibrate] = useState(false); // Add state for vibration
+
   const tapButtonShowCount = 3; // Show TAP-TAP-TAP button after 3 clicks
   const morrButtonShowCount = 6; // Show MORRR!!! button after 6 clicks
 
@@ -97,7 +99,7 @@ const Home = () => {
     if (userData.TapPoint > 0) {
       // Trigger vibration
       if (navigator.vibrate) {
-        navigator.vibrate(100); // Vibrate for 100ms
+        navigator.vibrate(1000); // Vibrate for 100ms
       }
   
       // Update TapPoint and TapClaim
@@ -125,23 +127,12 @@ const Home = () => {
   
         return newCount;
       });
-  
-      // Add vibration class to the coin image
-      const coinElement = document.getElementById('click');
-      if (coinElement) {
-        coinElement.classList.add('vibrate');
-        console.log('Vibrate class added'); // Debugging log
-        setTimeout(() => {
-          coinElement.classList.remove('vibrate');
-          console.log('Vibrate class removed'); // Debugging log
-        }, 100); // Remove class after the animation duration
-      } else {
-        console.log('Coin element not found'); // Debugging log
-      }
+
+      // Trigger vibration animation
+      setVibrate(true);
+      setTimeout(() => setVibrate(false), 100); // Remove class after the animation duration
     }
   };
-  
-  
 
   const handleClaim = () => {
     setUserData((prevState) => ({
@@ -189,19 +180,18 @@ const Home = () => {
       </div>
 
       <div className="relative mb-6 pb-6">
-  <img id="click" onClick={handleTap} src={coin} alt="LAR Coin" className="w-56 h-56 rounded-full" />
-  {showTapButton && (
-    <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
-      <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
-    </div>
-  )}
-  {showMorrButton && (
-    <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 pt-3 ml-0 button-animation move-morr">
-      <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">MORRR!!!</button>
-    </div>
-  )}
-</div>
-
+        <img id="click" onClick={handleTap} src={coin} alt="LAR Coin" className={`w-55 h-56 rounded-full ${vibrate ? 'vibrate' : ''}`} />
+        {showTapButton && (
+          <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
+            <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
+          </div>
+        )}
+        {showMorrButton && (
+          <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 pt-3 ml-0 button-animation move-morr">
+            <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">MORRR!!!</button>
+          </div>
+        )}
+      </div>
 
       <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
         <p className="px-3 text-xl font-normal">{userData?.TapClaim} <span className="text-golden-moon px-2 text-xl font-normal">LAR</span></p>
@@ -209,7 +199,7 @@ const Home = () => {
           Claim
         </button>
       </div>
-      <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900  py-1">
+      <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900 py-1">
         <Footer />
       </div>
     </div>
