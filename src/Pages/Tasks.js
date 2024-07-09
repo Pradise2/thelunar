@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
 import './Spinner.css';
 import { addUserTasks, getUserTasks, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
+import './bg.css';
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
@@ -131,8 +132,8 @@ const Tasks = () => {
   });
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-grow overflow-y-auto bg-gradient-to-b from-black to-zinc-900 text-center text-white p-4">
+    <div className=" bg-cover min-h-screen flex flex-col">
+      <div className="flex-grow overflow-y-auto bg-cover text-center text-white p-4">
         <h1 className="text-2xl font-bold">Complete the mission,<br /> earn the commission!</h1>
         <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
         <div className="flex justify-center w-full mt-4">

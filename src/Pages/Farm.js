@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
 import { addUserToFarm, getUserFromFarm, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
 import FormattedTime from '../Component/FormattedTime';
+import './bg.css';
 
 const Farm = () => {
   const [userData, setUserData] = useState(null);
@@ -139,7 +140,7 @@ const Farm = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-zinc-900 text-white flex flex-col items-center p-4 space-y-6">
+      <div className="min-h-screen bg-cover text-white flex flex-col items-center p-4 space-y-6">
         <h1 className="text-4xl font-normal">Farm LAR tokens</h1>
         <p className="text-zinc-400 text-center">
           Level up with token farming!<br />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
+import './bg.css';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
@@ -36,7 +37,7 @@ const Squad = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-white p-4 flex flex-col items-center space-y-4">
+    <div className="min-h-screen bg-cover text-white p-4 flex flex-col items-center space-y-4">
       <h1 className="text-center text-4xl font-normal">
         The bigger the tribe, <br/> the better the vibe!
       </h1>
