@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Footer from '../Component/Footer';
 import { PulseLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
@@ -15,10 +16,10 @@ const Home = () => {
   const [showTapButton, setShowTapButton] = useState(false);
   const [showMorrButton, setShowMorrButton] = useState(false);
   const [clickCount, setClickCount] = useState(0);
-  const [vibrate, setVibrate] = useState(false); // Add state for vibration
+  const [isVibrating, setIsVibrating] = useState(false); // State for vibration
 
-  const tapButtonShowCount = 13; // Show TAP-TAP-TAP button after 3 clicks
-  const morrButtonShowCount = 17; // Show MORRR!!! button after 6 clicks
+  const tapButtonShowCount = 3; // Show TAP-TAP-TAP button after 3 clicks
+  const morrButtonShowCount = 6; // Show MORRR!!! button after 6 clicks
 
   useEffect(() => {
     window.Telegram.WebApp.expand();
@@ -129,8 +130,8 @@ const Home = () => {
       });
 
       // Trigger vibration animation
-      setVibrate(true);
-      setTimeout(() => setVibrate(false), 100); // Remove class after the animation duration
+      setIsVibrating(true);
+      setTimeout(() => setIsVibrating(false), 100); // Stop vibration after the animation duration
     }
   };
 
@@ -180,7 +181,15 @@ const Home = () => {
       </div>
 
       <div className="relative mb-6 pb-6">
-        <img id="click" onClick={handleTap} src={coin} alt="LAR Coin" className={`w-55 h-56 rounded-full ${vibrate ? 'vibrate' : ''}`} />
+        <motion.img
+          id="click"
+          onClick={handleTap}
+          src={coin}
+          alt="LAR Coin"
+          className="w-55 h-56 rounded-full"
+          animate={isVibrating ? { x: [0, -10, 10, 0] } : {}}
+          transition={{ duration: 0.1 }}
+        />
         {showTapButton && (
           <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
             <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
@@ -192,7 +201,6 @@ const Home = () => {
           </div>
         )}
       </div>
-
       <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
         <p className="px-3 text-xl font-normal">{userData?.TapClaim} <span className="text-golden-moon px-2 text-xl font-normal">LAR</span></p>
         <button className="bg-golden-moon p-2 px-3 rounded-lg" onClick={handleClaim}>
