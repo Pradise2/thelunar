@@ -4,11 +4,11 @@ import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 // Home Collection Functions
 export const addUserToHome = async (userId, userData) => {
-  await setDoc(doc(db, "Home", userId), userData);
+  await setDoc(doc(db, "Home", userId.toString()), userData);
 };
 
 export const getUserFromHome = async (userId) => {
-  const docRef = doc(db, "Home", userId);
+  const docRef = doc(db, "Home", userId.toString());
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -20,7 +20,7 @@ export const getUserFromHome = async (userId) => {
 };
 
 export const updateHomeBalance = async (userId, newBalance) => {
-  const userRef = doc(db, "Home", userId);
+  const userRef = doc(db, "Home", userId.toString());
   await updateDoc(userRef, {
     HomeBalance: newBalance,
   });
@@ -28,11 +28,11 @@ export const updateHomeBalance = async (userId, newBalance) => {
 
 // Tasks Collection Functions
 export const addUserTasks = async (userId, tasks) => {
-  await setDoc(doc(db, "Tasks", userId), { Tasks: tasks });
+  await setDoc(doc(db, "Tasks", userId.toString()), { Tasks: tasks });
 };
 
 export const getUserTasks = async (userId) => {
-  const docRef = doc(db, "Tasks", userId);
+  const docRef = doc(db, "Tasks", userId.toString());
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -45,11 +45,11 @@ export const getUserTasks = async (userId) => {
 
 // Farm Collection Functions
 export const addUserToFarm = async (userId, farmData) => {
-  await setDoc(doc(db, "Farm", userId), farmData);
+  await setDoc(doc(db, "Farm", userId.toString()), farmData);
 };
 
 export const getUserFromFarm = async (userId) => {
-  const docRef = doc(db, "Farm", userId);
+  const docRef = doc(db, "Farm", userId.toString());
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -62,11 +62,11 @@ export const getUserFromFarm = async (userId) => {
 
 // Squad Collection Functions
 export const addUserToSquad = async (userId, squadData) => {
-  await setDoc(doc(db, "Squad", userId), squadData);
+  await setDoc(doc(db, "Squad", userId.toString()), squadData);
 };
 
 export const getUserFromSquad = async (userId) => {
-  const docRef = doc(db, "Squad", userId);
+  const docRef = doc(db, "Squad", userId.toString());
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
