@@ -4,7 +4,7 @@ import { PulseLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
 import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
 import './Home.css'; // Make sure to import the CSS file
-import coin from './coin.png'
+import coin from './coin1.png'
 import './bg.css'
 const Home = () => {
   const [userData, setUserData] = useState(null);
