@@ -4,7 +4,8 @@ import { PulseLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
 import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
 import './Home.css'; // Make sure to import the CSS file
-
+import coin from './coin.png'
+import './bg.css'
 const Home = () => {
   const [userData, setUserData] = useState(null);
   const [userId, setUserId] = useState("12345"); 
@@ -151,7 +152,7 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
+    <div className="bg-cover bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
       <div className="bg-zinc-800 rounded-lg p-4 w-full max-w-md text-center">
         <p className="text-zinc-500">Your Lunar Tokens</p>
         <p className="text-4xl font-normal">{userData?.HomeBalance} <span className="text-golden-moon">LAR</span></p>
@@ -172,7 +173,7 @@ const Home = () => {
       </div>
 
       <div className="relative mb-6 pb-6">
-        <img id="click" onClick={handleTap} src="https://placehold.co/200x200" alt="LAR Coin" className="w-55 h-56 rounded-full" />
+        <img id="click" onClick={handleTap} src={coin} alt="LAR Coin" className="w-55 h-56 rounded-full" />
         {showTapButton && (
           <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
             <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
