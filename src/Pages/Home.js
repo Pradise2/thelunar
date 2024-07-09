@@ -7,6 +7,7 @@ import './Home.css'; // Make sure to import the CSS file
 import coin from './coin1.png'
 import './bg.css'
 import './imgv.css'
+
 const Home = () => {
   const [userData, setUserData] = useState(null);
   const [userId, setUserId] = useState("12345"); 
@@ -127,8 +128,16 @@ const Home = () => {
   
       // Add vibration class to the coin image
       const coinElement = document.getElementById('click');
-      coinElement.classList.add('vibrate');
-      setTimeout(() => coinElement.classList.remove('vibrate'), 1000); // Remove class after the animation duration
+      if (coinElement) {
+        coinElement.classList.add('vibrate');
+        console.log('Vibrate class added'); // Debugging log
+        setTimeout(() => {
+          coinElement.classList.remove('vibrate');
+          console.log('Vibrate class removed'); // Debugging log
+        }, 100); // Remove class after the animation duration
+      } else {
+        console.log('Coin element not found'); // Debugging log
+      }
     }
   };
   
@@ -180,7 +189,7 @@ const Home = () => {
       </div>
 
       <div className="relative mb-6 pb-6">
-  <img id="click" onClick={handleTap} src={coin} alt="LAR Coin" className="w-55 h-56 rounded-full" />
+  <img id="click" onClick={handleTap} src={coin} alt="LAR Coin" className="w-56 h-56 rounded-full" />
   {showTapButton && (
     <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
       <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
