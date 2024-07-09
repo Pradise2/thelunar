@@ -17,8 +17,8 @@ const Home = () => {
   const [clickCount, setClickCount] = useState(0);
   const [vibrate, setVibrate] = useState(false); // Add state for vibration
 
-  const tapButtonShowCount = 3; // Show TAP-TAP-TAP button after 3 clicks
-  const morrButtonShowCount = 6; // Show MORRR!!! button after 6 clicks
+  const tapButtonShowCount = 13; // Show TAP-TAP-TAP button after 3 clicks
+  const morrButtonShowCount = 17; // Show MORRR!!! button after 6 clicks
 
   useEffect(() => {
     window.Telegram.WebApp.expand();
