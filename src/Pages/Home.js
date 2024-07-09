@@ -187,8 +187,8 @@ const Home = () => {
           src={coin}
           alt="LAR Coin"
           className="w-55 h-56 rounded-full"
-          animate={isVibrating ? { x: [0, -10, 10, 0] } : {}}
-          transition={{ duration: 0.1 }}
+          animate={isVibrating ? { x: [0, -10, 0, 10, 0] } : {y:[0, -10, 0, 10, 0]}}
+          transition={{ duration: 0.2 }}
         />
         {showTapButton && (
           <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
