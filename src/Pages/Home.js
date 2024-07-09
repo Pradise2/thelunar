@@ -181,8 +181,8 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-cover bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
-      <div className="bg-zinc-800 rounded-lg p-4 w-full max-w-md text-center">
+    <div className="bg-cover  bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
+      <div className="bg-zinc-800 bg-opacity-70 rounded-lg p-4 w-full max-w-md text-center">
         <p className="text-zinc-500">Your Lunar Tokens</p>
         <p className="text-4xl font-normal">{userData?.HomeBalance.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
       </div>
@@ -222,9 +222,9 @@ const Home = () => {
           </div>
         )}
       </div>
-      <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
+      <div className="bg-zinc-800 bg-opacity-70 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
         <p className="px-3 text-xl font-normal">{userData?.TapClaim.toLocaleString()} <span className="text-golden-moon px-2 text-xl font-normal">LAR</span></p>
-        <button className="bg-golden-moon p-2 px-3 rounded-lg" onClick={handleClaim}>
+        <button className="bg-golden-moon  p-2 px-3 rounded-lg" onClick={handleClaim}>
           Claim
         </button>
       </div>
