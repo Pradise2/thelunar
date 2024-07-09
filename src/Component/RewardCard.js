@@ -3,7 +3,23 @@ import { getUserFromHome } from '../utils/firestoreFunctions';
 
 const RewardCard = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("12345");
+  const [userId, setUserId] = useState(null);
+  
+  window.Telegram.WebApp.expand();
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserId(user.id);
+       
+      } else {
+        console.error('User data is not available.');
+      }
+    } else {
+      console.error('Telegram WebApp script is not loaded.');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {

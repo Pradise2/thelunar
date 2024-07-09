@@ -9,9 +9,25 @@ import RCFarm from '../Component/RCFarm';
 const Farm = () => {
   const [userData, setUserData] = useState(null);
   const [homeData, setHomeData] = useState(null);
-  const [userId, setUserId] = useState("12345");
+  const [userId, setUserId] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
+
+  window.Telegram.WebApp.expand();
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserId(user.id);
+       
+      } else {
+        console.error('User data is not available.');
+      }
+    } else {
+      console.error('Telegram WebApp script is not loaded.');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {

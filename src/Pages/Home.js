@@ -11,7 +11,7 @@ import './bg.css'
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("12345");
+  const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showTapButton, setShowTapButton] = useState(false);
   const [showMorrButton, setShowMorrButton] = useState(false);
@@ -24,6 +24,20 @@ const Home = () => {
 
   useEffect(() => {
     window.Telegram.WebApp.expand();
+  }, []);
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserId(user.id);
+       
+      } else {
+        console.error('User data is not available.');
+      }
+    } else {
+      console.error('Telegram WebApp script is not loaded.');
+    }
   }, []);
 
   useEffect(() => {

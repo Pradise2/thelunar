@@ -4,10 +4,22 @@ import './bg.css';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState(1); // Set userId to 1
+  const [userId, setUserId] = useState(null); // Set userId to 1
+
+  window.Telegram.WebApp.expand();
 
   useEffect(() => {
-    window.Telegram.WebApp.expand();
+    if (window.Telegram && window.Telegram.WebApp) {
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserId(user.id);
+       
+      } else {
+        console.error('User data is not available.');
+      }
+    } else {
+      console.error('Telegram WebApp script is not loaded.');
+    }
   }, []);
 
   const copyToClipboard = () => {
