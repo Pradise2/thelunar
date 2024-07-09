@@ -1,27 +1,42 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { getUserFromHome } from '../utils/firestoreFunctions';
 
 const RewardCard = () => {
+  const [userData, setUserData] = useState(null);
+  const [userId, setUserId] = useState("12345");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await getUserFromHome(userId);
+        if (data) {
+          setUserData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
   return (
-    <body>
-    <div class="flex items-center justify-center min-h-screen bg-zinc-500 backdrop-blur-2xl">
-      <div class="bg-zinc-800 text-white rounded-xl p-6 shadow-lg w-80">
-        <div class="flex flex-col items-center">
-          <div class="bg-green-500 rounded-full p-2 mb-4">
+    <div className="flex max-w-md items-center justify-center w-full min-h-screen backdrop-blur-sm">
+      <div className="bg-zinc-800 text-white rounded-xl p-6 shadow-lg w-80">
+        <div className="flex flex-col items-center">
+          <div className="bg-green-500 rounded-full p-2 mb-4">
             <img aria-hidden="true" alt="checkmark" src="https://openui.fly.dev/openui/24x24.svg?text=✔️" />
           </div>
-          <h2 class="text-lg font-semibold mb-2">Woo hoo!</h2>
-          <p class="text-4xl font-medium text-white mb-2">+56 <span class="text-golden-moon-500">LAR</span></p>
-          <p class="text-center text-gray-300 mb-4">Stay shining, keep grinding, in every cloud, find that silver lining. Get more LAR!</p>
-          <button class="bg-transparent border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-zinc-500 transition-colors">
+          <h2 className="text-lg font-semibold mb-2">Woo hoo!</h2>
+          <p className="text-4xl font-medium text-white mb-2">{userData?.TapClaim} <span className="text-golden-moon">LAR</span></p>
+          <p className="text-center text-gray-300 mb-4">Stay shining, keep grinding, in every cloud, find that silver lining. Get more LAR!</p>
+          <button className="bg-transparent border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-zinc-500 transition-colors">
             Morrrre!
           </button>
         </div>
       </div>
     </div>
-  </body>
-  
-  
-  )
-}
+  );
+};
 
-export default RewardCard
+export default RewardCard;

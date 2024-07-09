@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Footer from '../Component/Footer';
 import { PulseLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
 import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
 import './Home.css'; // Make sure to import the CSS file
 import coin from './coin1.png';
-import './bg.css';
-import './imgv.css';
+import RewardCard from '../Component/RewardCard';
+import Footer from '../Component/Footer';
+import './bg.css'
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
@@ -17,9 +17,10 @@ const Home = () => {
   const [showMorrButton, setShowMorrButton] = useState(false);
   const [clickCount, setClickCount] = useState(0);
   const [isVibrating, setIsVibrating] = useState(false); // State for vibration
+  const [showRewardCard, setShowRewardCard] = useState(false); // State to control RewardCard visibility
 
-  const tapButtonShowCount = 3; // Show TAP-TAP-TAP button after 3 clicks
-  const morrButtonShowCount = 6; // Show MORRR!!! button after 6 clicks
+  const tapButtonShowCount = 12; // Show TAP-TAP-TAP button after 3 clicks
+  const morrButtonShowCount = 20; // Show MORRR!!! button after 6 clicks
 
   useEffect(() => {
     window.Telegram.WebApp.expand();
@@ -100,7 +101,7 @@ const Home = () => {
     if (userData.TapPoint > 0) {
       // Trigger vibration
       if (navigator.vibrate) {
-        navigator.vibrate(1000); // Vibrate for 100ms
+        navigator.vibrate(100); // Vibrate for 100ms
       }
   
       // Update TapPoint and TapClaim
@@ -136,11 +137,21 @@ const Home = () => {
   };
 
   const handleClaim = () => {
+    // Vibrate when claiming
+    if (navigator.vibrate) {
+      navigator.vibrate(200); // Vibrate for 200ms
+    }
+
+    // Show RewardCard and update userData
     setUserData((prevState) => ({
       ...prevState,
       HomeBalance: prevState.HomeBalance + prevState.TapClaim,
       TapClaim: 0,
     }));
+    setShowRewardCard(true);
+
+    // Hide RewardCard after 2 seconds
+    setTimeout(() => setShowRewardCard(false), 2000);
   };
 
   useEffect(() => {
@@ -207,11 +218,27 @@ const Home = () => {
           Claim
         </button>
       </div>
+
+      <AnimatePresence>
+        {showRewardCard && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+            onClick={() => setShowRewardCard(false)} // Click anywhere to close RewardCard
+          >
+            <RewardCard onClose={() => setShowRewardCard(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900 py-1">
-        <Footer />
-      </div>
-    </div>
-  );
+<Footer />
+</div>
+</div>
+);
 };
 
 export default Home;

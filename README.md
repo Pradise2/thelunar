@@ -1,84 +1,243 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Footer from '../Component/Footer';
+import { PulseLoader } from 'react-spinners';
+import FormattedTime from '../Component/FormattedTime';
+import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
+import './Home.css'; // Make sure to import the CSS file
+import coin from './coin1.png';
+import './bg.css';
+import './imgv.css';
+import RewardCard from '../Component/RewardCard';
 
-const Tasks = () => {
-  const [isCompleted, setIsCompleted] = useState(false);
+const Home = () => {
+  const [userData, setUserData] = useState(null);
+  const [userId, setUserId] = useState("12345");
+  const [loading, setLoading] = useState(true);
+  const [showTapButton, setShowTapButton] = useState(false);
+  const [showMorrButton, setShowMorrButton] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const [isVibrating, setIsVibrating] = useState(false); // State for vibration
+  const [showRewardCard, setShowRewardCard] = useState(false); // State to control RewardCard visibility
+
+  const tapButtonShowCount = 3; // Show TAP-TAP-TAP button after 3 clicks
+  const morrButtonShowCount = 6; // Show MORRR!!! button after 6 clicks
+
+  useEffect(() => {
+    window.Telegram.WebApp.expand();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const data = await getUserFromHome(userId);
+      if (data) {
+        setUserData(data);
+      } else {
+        const initialData = {
+          HomeBalance: 0,
+          TapPoint: 1000,
+          TapTime: 300,
+          TapClaim: 0,
+          LastActiveTime: Math.floor(Date.now() / 1000),
+        };
+        await addUserToHome(userId, initialData);
+        setUserData(initialData);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (userData) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const elapsed = currentTime - userData.LastActiveTime;
+
+        if (elapsed > 0) {
+          const newTapTime = userData.TapTime - elapsed;
+          if (newTapTime <= 0) {
+            setUserData((prevState) => ({
+              ...prevState,
+              TapTime: 300,
+              TapPoint: 1000,
+              LastActiveTime: currentTime,
+            }));
+          } else {
+            setUserData((prevState) => ({
+              ...prevState,
+              TapTime: newTapTime,
+              LastActiveTime: currentTime,
+            }));
+          }
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [userData]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (userId) {
+        addUserToHome(userId, userData);
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (userId && userData) {
+        addUserToHome(userId, userData);
+      }
+    };
+  }, [userId, userData]);
+
+  const handleTap = () => {
+    // Check if TapPoint is greater than 0
+    if (userData.TapPoint > 0) {
+      // Trigger vibration
+      if (navigator.vibrate) {
+        navigator.vibrate(100); // Vibrate for 100ms
+      }
+  
+      // Update TapPoint and TapClaim
+      setUserData((prevState) => ({
+        ...prevState,
+        TapPoint: prevState.TapPoint - 1,
+        TapClaim: prevState.TapClaim + 1,
+      }));
+  
+      // Increment click count and show buttons
+      setClickCount((prevCount) => {
+        const newCount = prevCount + 1;
+  
+        // Show the TAP-TAP-TAP button after the specified number of clicks
+        if (newCount % tapButtonShowCount === 0) {
+          setShowTapButton(true);
+          setTimeout(() => setShowTapButton(false), 600);
+        }
+  
+        // Show the MORRR!!! button after the specified number of clicks
+        if (newCount % morrButtonShowCount === 0) {
+          setShowMorrButton(true);
+          setTimeout(() => setShowMorrButton(false), 600);
+        }
+  
+        return newCount;
+      });
+
+      // Trigger vibration animation
+      setIsVibrating(true);
+      setTimeout(() => setIsVibrating(false), 100); // Stop vibration after the animation duration
+    }
+  };
+
+  const handleClaim = () => {
+    // Vibrate when claiming
+    if (navigator.vibrate) {
+      navigator.vibrate(200); // Vibrate for 200ms
+    }
+
+    // Show RewardCard and update userData
+    setUserData((prevState) => ({
+      ...prevState,
+      HomeBalance: prevState.HomeBalance + prevState.TapClaim,
+      TapClaim: 0,
+    }));
+    setShowRewardCard(true);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <PulseLoader margin={9} />
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-b from-black to-zinc-900 text-center text-white p-4">
-        <h1 className="text-2xl font-bold">Complete the mission, earn the commission!</h1>
-        <p className="text-muted-foreground mt-2">But hey, only qualified actions unlock the LAR galaxy! ✨</p>
-        <div className="flex justify-center mt-4">
-          <button 
-            className={`py-2 px-4 rounded-l-full ${isCompleted ? 'bg-zinc-800 text-zinc-400' : 'bg-white text-black'}`}
-            onClick={() => setIsCompleted(false)}
-          >
-            New
-          </button>
-          <button 
-            className={`py-2 px-4 rounded-r-full ${isCompleted ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
-            onClick={() => setIsCompleted(true)}
-          >
-            Completed
-          </button>
+    <div className="bg-cover bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
+      <div className="bg-zinc-800 rounded-lg p-4 w-full max-w-md text-center">
+        <p className="text-zinc-500">Your Lunar Tokens</p>
+        <p className="text-4xl font-normal">{userData?.HomeBalance} <span className="text-golden-moon">LAR</span></p>
+      </div>
+      <div className="text-center">
+        <p>Tap, tap, tap! Can’t stop, won’t stop!</p>
+        <p>Timer shows refill, but the fun won’t flop! <span role="img" aria-label="thumbs up">👍</span></p>
+      </div>
+
+      <div className="flex space-x-4">
+        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center">
+          <p className="text-golden-moon">{userData?.TapPoint} taps </p>
         </div>
-        <div className="mt-6 space-y-4 ">
-          <div className="bg-zinc-800 p-4 rounded-lg flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Join YouTube</h2>
-              <p className="text-primary text-blue-400">10'000 LAR</p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="bg-primary text-primary-foreground py-2 px-4 rounded-lg">Go</button>
-              <img aria-hidden="true" alt="check-mark" src="https://openui.fly.dev/openui/24x24.svg?text=✔" />
-            </div>
-          </div>
-          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
-            <div>
-              <p className="font-semibold">Invite 5 Friends</p>
-              <p className="text-blue-400">15'000 LAR</p>
-            </div>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
-          </div>
-          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
-            <div>
-              <p className="font-semibold">Invite 10 Friends</p>
-              <p className="text-blue-400">25'000 LAR</p>
-            </div>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
-          </div>
-          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
-            <div>
-              <p className="font-semibold">Invite 20 Friends</p>
-              <p className="text-blue-400">50'000 LAR</p>
-            </div>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
-          </div>
-          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
-            <div>
-              <p className="font-semibold">Invite 50 Friends</p>
-              <p className="text-blue-400">200'000 LAR</p>
-            </div>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">Start</button>
-          </div>
-          <div className="bg-zinc-800 p-4 rounded-xl flex justify-between items-center">
-            <div>
-              <p className="font-semibold">Invite 100 Friends</p>
-              <p className="text-blue-400">500'000 LAR</p>
-            </div>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-full">S tart</button>
-          </div>
+        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-7 py-2 text-center flex items-center space-x-2">
+          <span className="text-yellow-900">⏰</span>
+          <p className="text-red-700"><FormattedTime time={userData?.TapTime}/></p>
         </div>
-        <div className="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around">
-          {/* Footer content */}
-        </div>
-        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around py-1">
+      </div>
+
+      <div className="relative mb-6 pb-6">
+        <motion.img
+          id="click"
+          onClick={handleTap}
+          src={coin}
+          alt="LAR Coin"
+          className="w-55 h-56 rounded-full"
+          animate={isVibrating ? { x: [0, -10, 0, 10, 0] } : {y:[0, -10, 0, 10, 0]}}
+          transition={{ duration: 0.2 }}
+        />
+        {showTapButton && (
+          <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
+            <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
+          </div>
+        )}
+        {showMorrButton && (
+          <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 pt-3 ml-0 button-animation move-morr">
+            <button className="bg-white text-black font-normal px-4 py-2 rounded-full shadow-lg">MORRR!!!</button>
+          </div>
+        )}
+      </div>
+      <div className="bg-zinc-800 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
+        <p className="px-3 text-xl font-normal">{userData?.TapClaim} <span className="text-golden-moon px-2 text-xl font-normal">LAR</span></p>
+        <button className="bg-golden-moon p-2 px-3 rounded-lg" onClick={handleClaim}>
+          Claim
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {showRewardCard && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.3 }}
+              className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+            >
+              <RewardCard onClose={() => setShowRewardCard(false)} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+  
+        <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900 py-1">
           <Footer />
         </div>
       </div>
-    </>
-  );
-}
-
-export default Tasks;
+    );
+  };
+  
+  export default Home;
+  
