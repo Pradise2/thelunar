@@ -10,7 +10,7 @@ const RCTasks = ({ onClose, task }) => {
           </div>
           <h2 className="text-lg font-semibold mb-2">Woo hoo!</h2>
           
-            <p className="text-4xl font-medium text-white mb-2">+{task.reward} <span className="text-golden-moon">LAR</span></p>
+            <p className="text-4xl font-medium text-white mb-2">+{task.reward.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
             <p className="text-center text-gray-300 mb-4">Stay shining, keep grinding, in every cloud, find that silver lining. Get more LAR!</p>
           
           <button className="bg-transparent border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-zinc-500 transition-colors" onClick={onClose}>

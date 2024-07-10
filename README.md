@@ -241,3 +241,22 @@ const Home = () => {
   
   export default Home;
   
+
+
+
+  Hey, Akintunde! Prepare for an out-of-this-world adventure! 🌌🚀
+
+TheLunarCoin Power Tap mini-game has just landed on Telegram, and it’s going to be epic!
+⚡ Get ready to be hooked! ⚡
+
+🤑 Farm tokens, conquer challenges, and score insane loot.
+💥 Form squads and invite your crew for double the fun (and double the tokens)!
+
+With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading, earning, and cards, we’ve got everything you need to dominate the cryptoverse!
+
+🚀 Let the lunar adventure begin! 🚀
+
+* Lunar Token is not a virtual currency.
+
+
+const token = process.env.TOKEN || '7233165030:AAEl_z6x1v9zvGcpMf1TQbpr390_j7SIHJg';

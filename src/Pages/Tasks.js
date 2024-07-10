@@ -3,18 +3,19 @@ import Footer from '../Component/Footer';
 import './Spinner.css';
 import { addUserTasks, getUserTasks, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
 import './bg.css';
-import RCTasks from '../Component/RCTasks'
+import RCTasks from '../Component/RCTasks';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [homeData, setHomeData] = useState(null);
   const [taskReadyToClaim, setTaskReadyToClaim] = useState(null);
   const [showRCTasks, setShowRCTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null); // New state for selected task
+  const [showGoButton, setShowGoButton] = useState(false); // New state for showing "Go" button
 
   const tasks = [
     { id: 1, title: 'Invite 5 Friends', reward: 15000, link: "https://youtube.com" },
@@ -131,6 +132,9 @@ const Tasks = () => {
       setSelectedTask(task); // Set the selected task
       setShowRCTasks(true);
 
+      // Show "Go" button after claim is clicked
+      setShowGoButton(true);
+
       // Hide RewardCard after 2 seconds
       setTimeout(() => setShowRCTasks(false), 2000);
 
@@ -228,36 +232,38 @@ const Tasks = () => {
                     Completed
                   </button>
                 )}
-                <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
-                  Go
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {showRCTasks && selectedTask && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
-            onClick={() => setShowRCTasks(false)} // Click anywhere to close RewardCard
-          >
-            <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
-        <Footer />
-      </div>
-    </div>
-  );
-};
-
-export default Tasks;
-
+                {showGoButton && userData.TasksStatus[task.id] === 'completed' && (
+                                    <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
+                                    Go
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                
+                      <AnimatePresence>
+                        {showRCTasks && selectedTask && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+                            onClick={() => setShowRCTasks(false)} // Click anywhere to close RewardCard
+                          >
+                            <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                
+                      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
+                        <Footer />
+                      </div>
+                    </div>
+                  );
+                };
+                
+                export default Tasks;
+                

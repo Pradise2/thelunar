@@ -9,7 +9,7 @@ import RCFarm from '../Component/RCFarm';
 const Farm = () => {
   const [userData, setUserData] = useState(null);
   const [homeData, setHomeData] = useState(null);
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
 
@@ -20,6 +20,7 @@ const Farm = () => {
       const user = window.Telegram.WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
+       
       } else {
         console.error('User data is not available.');
       }
@@ -146,7 +147,7 @@ const Farm = () => {
       }));
     } else if (buttonText === "Claim" && homeData) {
       try {
-      const newHomeBalance =  + userData.FarmReward;
+      const newHomeBalance = homeData.HomeBalance  + userData.FarmReward;
       await updateHomeBalance(userId, newHomeBalance);
       setHomeData((prevState) => ({
         ...prevState,

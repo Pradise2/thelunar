@@ -4,7 +4,7 @@ import './bg.css';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState(null); // Set userId to 1
+  const [userId, setUserId] = useState("12345"); // Set userId to 1
 
   window.Telegram.WebApp.expand();
 
