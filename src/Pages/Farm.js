@@ -9,7 +9,7 @@ import RCFarm from '../Component/RCFarm';
 const Farm = () => {
   const [userData, setUserData] = useState(null);
   const [homeData, setHomeData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("12");
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
 
