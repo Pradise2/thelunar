@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { addUserToSquad, getUserFromSquad, getUserFromHome } from '../utils/firestoreFunctions';
 import Footer from '../Component/Footer';
 import './bg.css';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState("12345"); // Set userId to 1
+  const [userId, setUserId] = useState("743737380");
+  const [squadData, setSquadData] = useState(null);
+  const [homeData, setHomeData] = useState(null);
 
   window.Telegram.WebApp.expand();
 
@@ -21,6 +24,23 @@ const Squad = () => {
       console.error('Telegram WebApp script is not loaded.');
     }
   }, []);
+
+  useEffect(() => {
+    const fetchSquadData = async () => {
+      const data = await getUserFromSquad(userId);
+      setSquadData(data);
+    };
+
+    fetchSquadData();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      const data = await getUserFromHome(userId);
+      setHomeData(data);
+    };
+    fetchHomeData();
+  }, [userId]);
 
   const copyToClipboard = () => {
     const reflink = `https://t.me/ThelunarCoin_bot?start=ref_${userId}`;
@@ -48,52 +68,81 @@ const Squad = () => {
     }
   };
 
+  const handleClaim = async () => {
+    const updatedTotalBalance = squadData.totalBalance + squadData.referralEarnings;
+    const updatedSquadData = {
+      ...squadData,
+      totalBalance: updatedTotalBalance,
+      referralEarnings: 0
+    };
+
+    setSquadData(updatedSquadData);
+
+    try {
+      await addUserToSquad(userId, updatedSquadData);
+    } catch (error) {
+      console.error('Error updating squad data:', error);
+    }
+  };
+
+  if (!squadData || !homeData) {
+    return (
+      <div className="min-h-screen bg-cover text-white p-4 flex flex-col items-center space-y-4">
+        <h1 className="text-center text-4xl font-normal">Loading...</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-cover text-white p-4 flex flex-col items-center space-y-4">
       <h1 className="text-center text-4xl font-normal">
-        The bigger the tribe, <br/> the better the vibe!
+        The bigger the tribe, <br /> the better the vibe!
       </h1>
-      <div className="bg-zinc-800 p-4 rounded-xl w-full max-w-md space-y-2">
-        <p className="text-zinc-400 text-center ">Total squad balance</p>
+      <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
+        <p className="text-zinc-400 text-center">Total squad balance</p>
         <p className="text-center text-3xl font-normal">
-          41’753.81 <span className="text-golden-moon">LAR</span>
+          {homeData.HomeBalance + squadData.totalBalance} <span className="text-golden-moon">LAR</span>
         </p>
       </div>
-      <div className="bg-zinc-800 p-4 rounded-xl w-full max-w-md space-y-2 ">
-        <p className="text-zinc-400 text-center ">Your rewards</p>
+      <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
+        <p className="text-zinc-400 text-center">Your rewards</p>
         <p className="text-center text-3xl font-normal">
-          5.60 <span className="text-golden-moon">LAR</span>
+          {squadData.referralEarnings.toLocaleString()} <span className="text-golden-moon">LAR</span>
         </p>
-        <p className="text-sm mb-4 text-center ">10% of your friends earnings</p>
+        <p className="text-sm mb-4 text-center">10% of your friends' earnings</p>
         <div className="flex p-1 justify-center">
-          <button className="bg-golden-moon  px-4 py-2 rounded-xl ">Claim</button>
+          <button className="bg-golden-moon px-4 py-2 rounded-xl" onClick={handleClaim}>Claim</button>
         </div>
-        </div>
-      <div className="bg-zinc-800 p-4 rounded-xl w-full max-w-md space-y-2">
-        <div className="flex justify-between text-sm items-center bg-zinc-700 rounded-lg py-2 px-3">
-          <p className=" flex items-center">
+      </div>
+      <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
+        <div className="flex justify-between bg-opacity-70 text-sm items-center bg-zinc-700 rounded-lg py-2 px-3">
+          <p className="flex items-center">
             <img aria-hidden="true" alt="team-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👥" className="mr-2" />
             Your team
           </p>
-          <p>1 users</p>
+          <p>{squadData.referralCount} users</p>
         </div>
-        <div className="flex font-normal justify-between items-center px-3">
-          <p className="flex items-center">
-            <img aria-hidden="true" alt="user-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👤" className="mr-2" />
-            Akin Ola
-          </p>
-          <p className="text-primary">56.00 <span className="text-golden-moon">LAR</span> </p>
+        <div>
+          {squadData.referrals.map((referral, index) => (
+            <div key={index} className="flex font-normal justify-between items-center px-3">
+              <p className="flex items-center">
+                <img aria-hidden="true" alt="user-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👤" className="mr-2" />
+                {referral.username}
+              </p>
+              <p className="text-primary">{referral.referralBonus.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
+            </div>
+          ))}
         </div>
       </div>
       <div className="w-full max-w-md flex space-x-2 mt-5">
         <button className="flex-1 bg-gradient-to-r from-golden-moon py-2 rounded-lg" onClick={copyToClipboard}>
           Invite friends
         </button>
-        <button className="bg-zinc-700 p-2 rounded-lg" onClick={copyToClipboard}>
+        <button className="bg-zinc-700 bg-opacity-70 p-2 rounded-lg" onClick={copyToClipboard}>
           {copied ? <span>Copied!</span> : <span>Copy</span>}
         </button>
       </div>
-      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900  justify-around py-1">
+      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
         <Footer />
       </div>
     </div>
