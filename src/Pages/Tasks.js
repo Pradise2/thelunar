@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
 import './Spinner.css';
+import { ClipLoader } from 'react-spinners';
 import { addUserTasks, getUserTasks, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
 import './bg.css';
 import RCTasks from '../Component/RCTasks';
@@ -16,6 +17,7 @@ const Tasks = () => {
   const [showRCTasks, setShowRCTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null); // New state for selected task
   const [showGoButton, setShowGoButton] = useState(false); // New state for showing "Go" button
+  const [loading, setLoading] = useState(true); // New state for loading
 
   const tasks = [
     { id: 1, title: 'Invite 5 Friends', reward: 15000, link: "https://youtube.com" },
@@ -30,7 +32,6 @@ const Tasks = () => {
       const user = window.Telegram.WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
-       
       } else {
         console.error('User data is not available.');
       }
@@ -60,8 +61,10 @@ const Tasks = () => {
           await addUserTasks(userId, initialData);
           setUserData(initialData);
         }
+        setLoading(false); // Data fetching completed
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false); // Data fetching completed even if there is an error
       }
     };
 
@@ -173,6 +176,22 @@ const Tasks = () => {
     return true;
   });
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-cover text-white p-4">
+        <div className="flex flex-col items-center space-y-4">
+          <h1 className="text-white text-4xl font-normal">
+            <ClipLoader
+              color="#FFD700" // Golden color
+              size={60}
+              speedMultiplier={1}
+            />
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-cover min-h-screen flex flex-col">
       <div className="flex-grow overflow-y-auto bg-cover text-center text-white p-4">
@@ -214,56 +233,56 @@ const Tasks = () => {
                     ) : (
                       'Start'
                     )}
-                  </button>
-                )}
-                {userData.TasksStatus[task.id] === 'claim' && (
-                  <button 
-                    onClick={() => handleClaimClick(task.id, task.reward)} 
-                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                  >
-                    Claim
-                  </button>
-                )}
-                {userData.TasksStatus[task.id] === 'completed' && (
-                  <button 
-                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                    disabled
-                  >
-                    Completed
-                  </button>
-                )}
-                {showGoButton && userData.TasksStatus[task.id] === 'completed' && (
-                                    <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
-                                    Go
-                                  </a>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                
-                      <AnimatePresence>
-                        {showRCTasks && selectedTask && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
-                            onClick={() => setShowRCTasks(false)} // Click anywhere to close RewardCard
-                          >
-                            <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                
-                      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
-                        <Footer />
-                      </div>
-                    </div>
-                  );
-                };
-                
-                export default Tasks;
-                
+                    </button>
+                  )}
+                  {userData.TasksStatus[task.id] === 'claim' && (
+                    <button 
+                      onClick={() => handleClaimClick(task.id, task.reward)} 
+                      className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                    >
+                      Claim
+                    </button>
+                  )}
+                  {userData.TasksStatus[task.id] === 'completed' && (
+                    <button 
+                      className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                      disabled
+                    >
+                      Completed
+                    </button>
+                  )}
+                  {showGoButton && userData.TasksStatus[task.id] === 'completed' && (
+                    <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
+                      Go
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+  
+        <AnimatePresence>
+          {showRCTasks && selectedTask && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+              onClick={() => setShowRCTasks(false)} // Click anywhere to close RewardCard
+            >
+              <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+  
+        <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
+          <Footer />
+        </div>
+      </div>
+    );
+  };
+  
+  export default Tasks;
+  

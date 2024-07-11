@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { addUserToSquad, getUserFromSquad, getUserFromHome } from '../utils/firestoreFunctions';
 import Footer from '../Component/Footer';
+import { ClipLoader } from 'react-spinners';
 import './bg.css';
 
 const Squad = () => {
@@ -8,6 +9,7 @@ const Squad = () => {
   const [userId, setUserId] = useState("743737380");
   const [squadData, setSquadData] = useState(null);
   const [homeData, setHomeData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   window.Telegram.WebApp.expand();
 
@@ -16,7 +18,6 @@ const Squad = () => {
       const user = window.Telegram.WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
-       
       } else {
         console.error('User data is not available.');
       }
@@ -27,19 +28,34 @@ const Squad = () => {
 
   useEffect(() => {
     const fetchSquadData = async () => {
-      const data = await getUserFromSquad(userId);
-      setSquadData(data);
+      try {
+        const data = await getUserFromSquad(userId);
+        setSquadData(data);
+      } catch (error) {
+        console.error('Error fetching squad data:', error);
+      }
     };
 
-    fetchSquadData();
+    if (userId) {
+      fetchSquadData();
+    }
   }, [userId]);
 
   useEffect(() => {
     const fetchHomeData = async () => {
-      const data = await getUserFromHome(userId);
-      setHomeData(data);
+      try {
+        const data = await getUserFromHome(userId);
+        setHomeData(data);
+      } catch (error) {
+        console.error('Error fetching home data:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchHomeData();
+
+    if (userId) {
+      fetchHomeData();
+    }
   }, [userId]);
 
   const copyToClipboard = () => {
@@ -68,6 +84,13 @@ const Squad = () => {
     }
   };
 
+  const calculateTotal = () => {
+    if (homeData && squadData) {
+      return homeData.HomeBalance + squadData.totalBalance;
+    }
+    return 0;
+  };
+
   const handleClaim = async () => {
     const updatedTotalBalance = squadData.totalBalance + squadData.referralEarnings;
     const updatedSquadData = {
@@ -85,10 +108,18 @@ const Squad = () => {
     }
   };
 
-  if (!squadData || !homeData) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-cover text-white p-4 flex flex-col items-center space-y-4">
-        <h1 className="text-center text-4xl font-normal">Loading...</h1>
+      <div className="min-h-screen flex justify-center items-center bg-cover text-white p-4">
+        <div className="flex flex-col items-center space-y-4">
+          <h1 className="text-white text-4xl font-normal">
+            <ClipLoader
+              color="#FFD700" // Golden color
+              size={60}
+              speedMultiplier={1}
+            />
+          </h1>
+        </div>
       </div>
     );
   }
@@ -101,13 +132,13 @@ const Squad = () => {
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center">Total squad balance</p>
         <p className="text-center text-3xl font-normal">
-          {homeData.HomeBalance + squadData.totalBalance} <span className="text-golden-moon">LAR</span>
+          {calculateTotal().toLocaleString()} <span className="text-golden-moon">LAR</span>
         </p>
       </div>
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center">Your rewards</p>
         <p className="text-center text-3xl font-normal">
-          {squadData.referralEarnings.toLocaleString()} <span className="text-golden-moon">LAR</span>
+          {squadData?.referralEarnings?.toLocaleString() || '0'} <span className="text-golden-moon">LAR</span>
         </p>
         <p className="text-sm mb-4 text-center">10% of your friends' earnings</p>
         <div className="flex p-1 justify-center">
@@ -120,18 +151,18 @@ const Squad = () => {
             <img aria-hidden="true" alt="team-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👥" className="mr-2" />
             Your team
           </p>
-          <p>{squadData.referralCount} users</p>
+          <p>{squadData?.referralCount || 0} users</p>
         </div>
         <div>
-          {squadData.referrals.map((referral, index) => (
-            <div key={index} className="flex font-normal justify-between items-center px-3">
+          {squadData?.referrals?.map((referral, index) => (
+            <div key={index} className="flex font-normal text-sm justify-between items-center px-3">
               <p className="flex items-center">
                 <img aria-hidden="true" alt="user-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👤" className="mr-2" />
                 {referral.username}
               </p>
               <p className="text-primary">{referral.referralBonus.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
             </div>
-          ))}
+          )) || <p className="text-center text-sm text-zinc-400">No referrals yet.</p>}
         </div>
       </div>
       <div className="w-full max-w-md flex space-x-2 mt-5">
