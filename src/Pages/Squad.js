@@ -3,6 +3,8 @@ import { addUserToSquad, getUserFromSquad, getUserFromHome } from '../utils/fire
 import Footer from '../Component/Footer';
 import { ClipLoader } from 'react-spinners';
 import './bg.css';
+import RCSquad from '../Component/RCSquad';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
@@ -10,6 +12,7 @@ const Squad = () => {
   const [squadData, setSquadData] = useState(null);
   const [homeData, setHomeData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showRCSquad, setShowRCSquad] = useState(false);
 
   window.Telegram.WebApp.expand();
 
@@ -92,6 +95,11 @@ const Squad = () => {
   };
 
   const handleClaim = async () => {
+    // Vibrate when claiming
+    if (navigator.vibrate) {
+      navigator.vibrate(500); // Vibrate for 500ms
+    }
+
     const updatedTotalBalance = squadData.totalBalance + squadData.referralEarnings;
     const updatedSquadData = {
       ...squadData,
@@ -100,6 +108,12 @@ const Squad = () => {
     };
 
     setSquadData(updatedSquadData);
+    setShowRCSquad(true);
+
+      
+
+      // Hide RewardCard after 2 seconds
+      setTimeout(() => setShowRCSquad(false), 2000);
 
     try {
       await addUserToSquad(userId, updatedSquadData);
@@ -123,7 +137,7 @@ const Squad = () => {
       </div>
     );
   } return (
-    <div className="min-h-screen bg-cover text-white  flex flex-col items-center space-y-4">
+    <div className="min-h-screen bg-cover text-white  flex flex-col items-center p-4 space-y-4">
       <h1 className="text-center text-4xl font-normal">
         The bigger the tribe, <br /> the better the vibe!
       </h1>
@@ -171,7 +185,22 @@ const Squad = () => {
           {copied ? <span>Copied!</span> : <span>Copy</span>}
         </button>
       </div>
-      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
+      
+      <AnimatePresence>
+          {showRCSquad && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+              onClick={() => setShowRCSquad(false)} // Click anywhere to close RewardCard
+            >
+              <RCSquad onClose={() => setShowRCSquad(false)} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      <div className="w-full max-w-md fixed bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
         <Footer />
       </div>
     </div>
