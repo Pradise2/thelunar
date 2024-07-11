@@ -149,6 +149,8 @@ const Home = () => {
   };
 
   const handleClaim = () => {
+    if (userData.TapClaim > 0) {
+    
     // Vibrate when claiming
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
@@ -164,6 +166,7 @@ const Home = () => {
 
     // Hide RewardCard after 2 seconds
     setTimeout(() => setShowRewardCard(false), 2000);
+  }
   };
 
   useEffect(() => {
