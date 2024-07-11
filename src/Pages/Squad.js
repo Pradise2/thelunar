@@ -109,7 +109,7 @@ const Squad = () => {
   };
 
   if (loading) {
-    return (
+       return (
       <div className="min-h-screen flex justify-center items-center bg-cover text-white p-4">
         <div className="flex flex-col items-center space-y-4">
           <h1 className="text-white text-4xl font-normal">
@@ -122,10 +122,8 @@ const Squad = () => {
         </div>
       </div>
     );
-  }
-
-  return (
-    <div className="min-h-screen bg-cover text-white p-4 flex flex-col items-center space-y-4">
+  } return (
+    <div className="min-h-screen bg-cover text-white  flex flex-col items-center space-y-4">
       <h1 className="text-center text-4xl font-normal">
         The bigger the tribe, <br /> the better the vibe!
       </h1>
@@ -138,7 +136,7 @@ const Squad = () => {
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center">Your rewards</p>
         <p className="text-center text-3xl font-normal">
-          {squadData?.referralEarnings?.toLocaleString() || '0'} <span className="text-golden-moon">LAR</span>
+          {squadData?.referralEarnings.toLocaleString() || '0'} <span className="text-golden-moon">LAR</span>
         </p>
         <p className="text-sm mb-4 text-center">10% of your friends' earnings</p>
         <div className="flex p-1 justify-center">
@@ -151,18 +149,18 @@ const Squad = () => {
             <img aria-hidden="true" alt="team-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👥" className="mr-2" />
             Your team
           </p>
-          <p>{squadData?.referralCount || 0} users</p>
+          <p>{squadData?.referralCount || '0'} users</p>
         </div>
         <div>
-          {squadData?.referrals?.map((referral, index) => (
-            <div key={index} className="flex font-normal text-sm justify-between items-center px-3">
+          {squadData?.referrals.map((referral, index) => (
+            <div key={index} className="flex font-normal text-sm  justify-between items-center px-3">
               <p className="flex items-center">
                 <img aria-hidden="true" alt="user-icon" src="https://openui.fly.dev/openui/24x24.svg?text=👤" className="mr-2" />
                 {referral.username}
               </p>
               <p className="text-primary">{referral.referralBonus.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
             </div>
-          )) || <p className="text-center text-sm text-zinc-400">No referrals yet.</p>}
+                    )) || <p className="text-center text-sm text-zinc-400">No referrals yet.</p>}
         </div>
       </div>
       <div className="w-full max-w-md flex space-x-2 mt-5">
@@ -178,6 +176,6 @@ const Squad = () => {
       </div>
     </div>
   );
-};
+  };
 
 export default Squad;
