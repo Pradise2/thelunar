@@ -110,6 +110,11 @@ const Tasks = () => {
   const handleClaimClick = async (taskId, reward) => {
     const task = tasks.find(t => t.id === taskId);
 
+    // Vibrate when claiming
+    if (navigator.vibrate) {
+      navigator.vibrate(500); // Vibrate for 500ms
+    }
+
     // Update TasksComplete to true for the clicked task
     setUserData(prevData => ({
       ...prevData,

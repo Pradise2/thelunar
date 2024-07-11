@@ -152,6 +152,10 @@ const Farm = () => {
         LastFarmActiveTime: Math.floor(Date.now() / 1000),
       }));
     } else if (buttonText === "Claim" && homeData) {
+      // Vibrate when claiming
+    if (navigator.vibrate) {
+      navigator.vibrate(500); // Vibrate for 500ms
+    }
       try {
         const newHomeBalance = homeData.HomeBalance + userData.FarmReward;
         await updateHomeBalance(userId, newHomeBalance);
