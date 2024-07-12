@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PulseLoader } from 'react-spinners';
+import { PulseLoader, ClipLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
 import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
 import './Home.css'; // Make sure to import the CSS file
@@ -179,8 +179,16 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <PulseLoader margin={9} />
+      <div className="min-h-screen flex justify-center items-center bg-cover text-white p-4">
+        <div className="flex flex-col items-center space-y-4">
+          <h1 className="text-white text-4xl font-normal">
+            <ClipLoader
+              color="#FFD700" // Golden color
+              size={60}
+              speedMultiplier={1}
+            />
+          </h1>
+        </div>
       </div>
     );
   }
