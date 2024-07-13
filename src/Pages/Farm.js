@@ -152,7 +152,7 @@ const Farm = () => {
         LastFarmActiveTime: Math.floor(Date.now() / 1000),
       }));
     } else if (buttonText === "Claim" && homeData) {
-      // Vibrate when claiming
+    if (userData?.FarmReward > 0) {
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
     }
@@ -174,6 +174,7 @@ const Farm = () => {
       } catch (error) {
         console.error('Error claiming reward:', error);
       }
+    }
     }
   };
 

@@ -4,7 +4,7 @@ import { PulseLoader, ClipLoader } from 'react-spinners';
 import FormattedTime from '../Component/FormattedTime';
 import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
 import './Home.css'; // Make sure to import the CSS file
-import coin from './coin1.png';
+import coin from './logo.png';
 import RewardCard from '../Component/RewardCard';
 import Footer from '../Component/Footer';
 import './bg.css'

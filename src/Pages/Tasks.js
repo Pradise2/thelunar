@@ -6,6 +6,7 @@ import { addUserTasks, getUserTasks, updateHomeBalance, getUserFromHome } from '
 import './bg.css';
 import RCTasks from '../Component/RCTasks';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from './logo.png'
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
@@ -224,7 +225,9 @@ const Tasks = () => {
             <div key={task.id} className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl flex justify-between items-center">
               <div>
                 <p className="font-semibold">{task.title}</p>
-                <p className="text-golden-moon">{task.reward.toLocaleString()} LAR</p>
+                <p className="text-golden-moon flex">            
+                  <img aria-hidden="true" alt="team-icon" src={logo} className="mr-2" width='25' height='5'/>
+                {task.reward.toLocaleString()} LAR</p>
               </div>
               <div className="flex items-center space-x-2">
                 {userData.TasksStatus[task.id] === 'start' && (
