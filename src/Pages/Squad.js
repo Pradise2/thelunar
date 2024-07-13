@@ -95,6 +95,7 @@ const Squad = () => {
   };
 
   const handleClaim = async () => {
+    if (squadData?.referralEarnings > 0) {
     // Vibrate when claiming
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
@@ -120,7 +121,8 @@ const Squad = () => {
     } catch (error) {
       console.error('Error updating squad data:', error);
     }
-  };
+  }
+};
 
   if (loading) {
        return (
