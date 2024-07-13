@@ -214,13 +214,13 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="relative mb-6 pb-6">
+      <div className="relative mb-3 pb-">
         <motion.img
           id="click"
           onClick={handleTap}
           src={coin}
           alt="LAR Coin"
-          className="w-55 h-56 rounded-full"
+          className="w-60 h-58 rounded-full"
           animate={isVibrating ? { x: [0, -10, 0, 10, 0] } : {y:[0, -10, 0, 10, 0]}}
           transition={{ duration: 0.2 }}
         />
