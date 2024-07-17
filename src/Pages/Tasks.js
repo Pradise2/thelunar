@@ -26,11 +26,17 @@ const Tasks = () => {
     { id: 3, title: 'Join Community', reward: 10000, link: "https://example.com" },
   ];
 
-  window.Telegram.WebApp.expand();
+  
 
   useEffect(() => {
+    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
-      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      const { WebApp } = window.Telegram;
+      
+      // Expand the WebApp
+      WebApp.expand();
+  
+      const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
       } else {
@@ -201,7 +207,7 @@ const Tasks = () => {
   return (
     <div className="bg-cover min-h-screen flex flex-col">
       <div className="flex-grow overflow-y-auto bg-cover text-center text-white p-4">
-        <h1 className="text-2xl font-bold">Complete the mission,<br /> earn the commission!</h1>
+        <h1 className="text-2xl font-bold">Curious about the moon's secrets? <br />Complete tasks to find out!</h1>
         <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
         <div className="flex justify-center w-full mt-4">
           <button 

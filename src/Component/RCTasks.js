@@ -8,10 +8,11 @@ const RCTasks = ({ onClose, task }) => {
           <div className="bg-green-500 rounded-full p-2 mb-4">
             <img aria-hidden="true" alt="checkmark" src="https://openui.fly.dev/openui/24x24.svg?text=✔️" />
           </div>
-          <h2 className="text-lg font-semibold mb-2">Woo hoo!</h2>
+          <h2 className="text-lg font-semibold mb-2">Well done explorer!</h2>
           
             <p className="text-4xl font-medium text-white mb-2">+{task.reward.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
-            <p className="text-center text-gray-300 mb-4">Stay shining, keep grinding, in every cloud, find that silver lining. Get more LAR!</p>
+            <p className="text-center text-gray-300 mb-4">Never stop tapping, never stop building
+            Get more LAR, grow your colony.</p>
           
           <button className="bg-transparent border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-zinc-500 transition-colors" onClick={onClose}>
             Morrrre!

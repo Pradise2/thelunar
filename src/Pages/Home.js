@@ -22,14 +22,17 @@ const Home = () => {
   const tapButtonShowCount = 12; // Show TAP-TAP-TAP button after 3 clicks
   const morrButtonShowCount = 20; // Show MORRR!!! button after 6 clicks
 
-  window.Telegram.WebApp.expand();
-
   useEffect(() => {
+    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
-      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      const { WebApp } = window.Telegram;
+      
+      // Expand the WebApp
+      WebApp.expand();
+  
+      const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
-       
       } else {
         console.error('User data is not available.');
       }
@@ -37,6 +40,7 @@ const Home = () => {
       console.error('Telegram WebApp script is not loaded.');
     }
   }, []);
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -200,8 +204,8 @@ const Home = () => {
         <p className="text-4xl font-normal">{userData?.HomeBalance.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
       </div>
       <div className="text-center">
-        <p>Tap, tap, tap! Can’t stop, won’t stop!</p>
-        <p>Timer shows refill, but the fun won’t flop! <span role="img" aria-label="thumbs up">👍</span></p>
+        <p>Never stop tapping, every second matters</p>
+        <p>As the moon drifts further, every tap gets you closer!<span role="img" aria-label="thumbs up">👍</span></p>
       </div>
 
       <div className="flex space-x-4">

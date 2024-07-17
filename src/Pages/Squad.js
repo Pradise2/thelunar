@@ -14,11 +14,16 @@ const Squad = () => {
   const [loading, setLoading] = useState(true);
   const [showRCSquad, setShowRCSquad] = useState(false);
 
-  window.Telegram.WebApp.expand();
 
   useEffect(() => {
+    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
-      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      const { WebApp } = window.Telegram;
+      
+      // Expand the WebApp
+      WebApp.expand();
+  
+      const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
       } else {
@@ -141,7 +146,7 @@ const Squad = () => {
   } return (
     <div className="min-h-screen bg-cover text-white  flex flex-col items-center p-4 space-y-4">
       <h1 className="text-center text-4xl font-normal">
-        The bigger the tribe, <br /> the better the vibe!
+        The larger the tribe, <br /> the greater the experience!
       </h1>
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center">Total squad balance</p>

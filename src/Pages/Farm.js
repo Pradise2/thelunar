@@ -15,11 +15,16 @@ const Farm = () => {
   const [showRCFarm, setShowRCFarm] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  window.Telegram.WebApp.expand();
 
   useEffect(() => {
+    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
-      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      const { WebApp } = window.Telegram;
+      
+      // Expand the WebApp
+      WebApp.expand();
+  
+      const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
       } else {
@@ -193,8 +198,8 @@ const Farm = () => {
     <div className="min-h-screen bg-cover text-white flex flex-col items-center p-4 space-y-6">
       <h1 className="text-4xl font-normal">Farm LAR tokens</h1>
       <p className="text-zinc-400 text-center">
-        Level up with token farming!<br />
-        Claim LAR and keep the farm poppin!
+      Propel yourself by farming LAR!<br />
+      Claim more LAR and reach for the stars!
       </p>
       <div className="bg-zinc-800 bg-opacity-70 text-red-700 w-full max-w-md px-4 py-2 rounded-xl text-center">
         Current farming era: <span className="text-yellow-900">⏰</span> <FormattedTime time={userData?.FarmTime} />
