@@ -3,7 +3,7 @@ import { getUserFromSquad } from '../utils/firestoreFunctions';
 
 const RCSquad = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("743737380");
+  const [userId, setUserId] = useState(null);
 
   // Expand the Telegram WebApp view
   window.Telegram.WebApp.expand();

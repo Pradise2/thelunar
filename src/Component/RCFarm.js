@@ -3,7 +3,7 @@ import { getUserFromFarm } from '../utils/firestoreFunctions';
 
 const RCFarm = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("743737380");
+  const [userId, setUserId] = useState(null);
 
   window.Telegram.WebApp.expand();
 

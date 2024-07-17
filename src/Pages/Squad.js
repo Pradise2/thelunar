@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState("743737380");
+  const [userId, setUserId] = useState(null);
   const [squadData, setSquadData] = useState(null);
   const [homeData, setHomeData] = useState(null);
   const [loading, setLoading] = useState(true);
