@@ -3,7 +3,7 @@ import { getUserFromHome } from '../utils/firestoreFunctions';
 
 const RewardCard = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("743737380");
   
   useEffect(() => {
     // Check if Telegram WebApp is available

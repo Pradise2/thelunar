@@ -11,7 +11,7 @@ import './bg.css'
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("743737380");
   const [loading, setLoading] = useState(true);
   const [showTapButton, setShowTapButton] = useState(false);
   const [showMorrButton, setShowMorrButton] = useState(false);
