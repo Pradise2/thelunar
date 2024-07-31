@@ -4,11 +4,12 @@ import { addUserToFarm, getUserFromFarm } from '../utils/firestoreFunctions';
 import FormattedTime from '../Component/FormattedTime';
 import './bg.css';
 import { ClipLoader } from 'react-spinners';
-import coin from './logo.png';
+import coin from './log.png';
+import coin2 from './logo.png';
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("03");
   const [userName, setUserName] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
@@ -182,21 +183,21 @@ const Home = () => {
         <img src={coin} alt="LAR Coin" className="w-60 h-58 rounded-full" />
       </div>
       <div className="flex flex-row justify-between items-center space-x-4">
-        <p className="text-zinc-400 font-bold text-xl">HI, {userName}</p>
+        <p className="text-white font-bold text-xl">HI, {userName}</p>
         <p className="text-golden-moon font-bold text-xl">
           {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
         </p>
       </div>
 
-      <div className="bg-zinc-800 bg-opacity-70 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
+      <div className="bg-zinc-950 bg-opacity-80 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
         <p className="text-zinc-400 text-xl ">Your Farming</p>
         <div className="flex items-center justify-center space-x-2">
-          <img aria-hidden="true" alt="team-icon" src={coin} className="mr-2" width="25" height="5" />
+          <img aria-hidden="true" alt="team-icon" src={coin2} className="mr-2" width="25" height="5" />
           <p className="text-4xl font-normal text-primary">
             {userData && isValidNumber(userData.FarmReward) ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
           </p>
         </div>
-        <p className="font-extrabold text-golden-moon"><FormattedTime time={userData?.FarmTime || 0}/></p>
+        <p className="font-extrabold text-red-600"><FormattedTime time={userData?.FarmTime || 0}/></p>
         <div className="space-y-4 w-full flex items-center flex-col">
           <button
             className={`text-white hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-zinc-800 bg-opacity-70" : "bg-gradient-to-r from-golden-moon"}`}

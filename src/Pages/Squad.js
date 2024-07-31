@@ -207,7 +207,7 @@ const Squad = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      <div className="w-full max-w-md fixed bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
+      <div className="w-full sticky max-w-md  bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
         <Footer />
       </div>
     </div>

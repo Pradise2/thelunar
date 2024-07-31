@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="flex justify-around w-full max-w-md mt-4 font-thin font-sans text-xs">
       <Link to="/"  className="flex flex-col items-center">
       <span className="material-icons text-zinc-400">layers</span>
-      Tap
+      Home
       </Link>
           <Link to="/tasks"className="flex flex-col items-center">
           <span className="material-icons text-zinc-400">assignment</span>
