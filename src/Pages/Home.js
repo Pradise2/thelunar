@@ -179,8 +179,8 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-4">
-      <div className="relative mb-3 pb-">
-        <img src={coin} alt="LAR Coin" className="w-60 h-58 rounded-full" />
+      <div className="relative pt-6 mb-3 pb-">
+        <img src={coin} alt="LAR Coin" className="w-63 h-60 rounded-full" />
       </div>
       <div className="flex flex-row justify-between items-center space-x-4">
         <p className="text-white font-bold text-xl">HI, {userName}</p>

@@ -10,6 +10,7 @@ const token = process.env.TOKEN || '7233165030:AAEO2yudL-ypxo3k3Z1fyxeld25XeS39J
 const bot = new Telegraf(token);
 // Web App Link
 const web_link = 'https://thelunarcoin.vercel.app';
+const Telegram = 'https://t.me/lunarcoincommunity';
 
 // Start Handler
 bot.start(async (ctx) => {
@@ -23,7 +24,7 @@ bot.start(async (ctx) => {
     const messageText = `
 *Hey, ${userName}* Prepare for an out-of-this-world adventure! 🌌🚀
 
-TheLunarCoin Power Tap mini-game has just landed on Telegram, and it’s going to be epic!
+TheLunarCoin Power mini-game has just landed on Telegram, and it’s going to be epic!
 
 ⚡ Get ready to be hooked! ⚡
 
@@ -34,17 +35,17 @@ TheLunarCoin Power Tap mini-game has just landed on Telegram, and it’s going t
 With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading, earning, and cards, we’ve got everything you need to dominate the cryptoverse!
 
 🚀 Let the lunar adventure begin! 🚀
-
-* Lunar Token is not a virtual currency.*
     `;
 
     await ctx.replyWithMarkdown(messageText, {
       reply_markup: {
         inline_keyboard: [
-          [{ text: "Start Now", web_app: { url: urlSent } }]
+          [{ text: "Launch", web_app: { url: urlSent } }],
+          [{ text: "Join Community", web_app: { url: Telegram } }]
         ]
-      },
+      }
     });
+    
 
     if (startPayload.startsWith('ref_')) {
       const refUserId = startPayload.split('_')[1];
