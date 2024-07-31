@@ -60,7 +60,7 @@ const Home = () => {
         } else {
           const initialData = {
             FarmBalance: 0,
-            FarmTime: 21600,
+            FarmTime: 14400,
             FarmReward: 0,
             LastFarmActiveTime: currentTime,
           };
@@ -151,7 +151,7 @@ const Home = () => {
             ...userData,
             FarmBalance: newFarmBalance,
             FarmReward: 0,
-            FarmTime: 21600,
+            FarmTime: 14400,
           };
           await addUserToFarm(userId, newUserData);
           setUserData(newUserData);

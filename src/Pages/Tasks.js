@@ -10,7 +10,7 @@ import logo from './logo.png';
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState("01"); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [farmData, setFarmData] = useState(null);
@@ -220,13 +220,13 @@ const Tasks = () => {
         <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
         <div className="flex justify-center w-full mt-4">
           <button 
-            className={`py-2 bg-opacity-70 text-center text-sm w-full rounded-2xl ${taskFilter === 'new' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
+            className={`py-2 bg-opacity-70 text-center text-sm w-full rounded-2xl ${taskFilter === 'new' ? 'bg-white text-black' : 'bg-zinc-950 text-zinc-400'}`}
             onClick={() => setTaskFilter('new')}
           > 
             New
           </button>
           <button 
-            className={`bg-opacity-70 py-2 text-center text-sm w-full rounded-2xl ${taskFilter === 'completed' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400'}`}
+            className={`bg-opacity-70 py-2 text-center text-sm w-full rounded-2xl ${taskFilter === 'completed' ? 'bg-white text-black' : 'bg-zinc-950 text-zinc-400'}`}
             onClick={() => setTaskFilter('completed')}
           >
             Completed
@@ -237,7 +237,7 @@ const Tasks = () => {
             <div>No completed tasks yet.</div>
           )}
           {filteredTasks.map((task) => (
-            <div key={task.id} className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl flex justify-between items-center">
+            <div key={task.id} className="bg-zinc-950 bg-opacity-70 p-4 rounded-xl flex justify-between items-center">
               <div>
                 <p className="font-semibold">{task.title}</p>
                 <p className="text-golden-moon flex">            
