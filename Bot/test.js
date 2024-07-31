@@ -9,7 +9,7 @@ const app = express();
 const token = process.env.TOKEN || '7233165030:AAEO2yudL-ypxo3k3Z1fyxeld25XeS39JWc';
 const bot = new Telegraf(token);
 // Web App Link
-const web_link = 'https://thelunarcoin.vercel.app/';
+const web_link = 'https://thelunarcoin.vercel.app';
 
 // Start Handler
 bot.start(async (ctx) => {

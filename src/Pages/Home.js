@@ -4,13 +4,10 @@ import { addUserToFarm, getUserFromFarm } from '../utils/firestoreFunctions';
 import FormattedTime from '../Component/FormattedTime';
 import './bg.css';
 import { ClipLoader } from 'react-spinners';
-import { motion, AnimatePresence } from 'framer-motion';
-import RCFarm from '../Component/RCFarm';
 import coin from './logo.png';
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [homeData, setHomeData] = useState(null);
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
@@ -75,7 +72,9 @@ const Home = () => {
       }
     };
 
-    fetchUserData();
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   useEffect(() => {
@@ -176,16 +175,15 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-4">
-    
       <div className="relative mb-3 pb-">
         <img src={coin} alt="LAR Coin" className="w-60 h-58 rounded-full" />
       </div>
       <div className="flex flex-row justify-between items-center space-x-4">
-  <p className="text-zinc-400 font-bold text-xl">HI, {userName}</p>
-  <p className="text-golden-moon font-bold text-xl">
-    {userData.FarmBalance.toLocaleString()} <span className="text-golden-moon"></span>
-  </p>
-</div>
+        <p className="text-zinc-400 font-bold text-xl">HI, {userName}</p>
+        <p className="text-golden-moon font-bold text-xl">
+          {userData ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
+        </p>
+      </div>
 
       <div className="bg-zinc-800 bg-opacity-70 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
         <p className="text-zinc-400 text-xl ">Your Farming</p>
