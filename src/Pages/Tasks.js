@@ -215,7 +215,7 @@ const Tasks = () => {
 
   return (
     <div className="bg-cover min-h-screen flex flex-col">
-      <div className="flex-grow overflow-y-auto bg-cover text-center text-white p-4">
+      <div className="flex-grow overflow-y-auto  text-center text-white p-4">
         <h1 className="text-2xl font-bold">Curious about the moon's secrets? <br />Complete tasks to find out!</h1>
         <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
         <div className="flex justify-center w-full mt-4">
