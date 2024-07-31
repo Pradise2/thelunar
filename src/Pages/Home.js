@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import RCFarm from '../Component/RCFarm';
 import coin from './logo.png';
 
-const Farm = () => {
+const Home = () => {
   const [userData, setUserData] = useState(null);
   const [homeData, setHomeData] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -213,4 +213,4 @@ const Farm = () => {
   );
 };
 
-export default Farm;
+export default Home;
