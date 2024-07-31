@@ -35,6 +35,7 @@ const Home = () => {
       try {
         const data = await getUserFromFarm(userId);
         const currentTime = Math.floor(Date.now() / 1000);
+
         if (data) {
           const elapsed = currentTime - data.LastFarmActiveTime;
           const newFarmTime = data.FarmTime - elapsed;
@@ -42,7 +43,7 @@ const Home = () => {
             setUserData({
               ...data,
               FarmTime: 0,
-              FarmReward: data.FarmReward + data.FarmTime * 0.1,
+              FarmReward: (data.FarmReward || 0) + (data.FarmTime || 0) * 0.1,
               LastFarmActiveTime: currentTime,
             });
             setButtonText("Claim");
@@ -50,7 +51,7 @@ const Home = () => {
             setUserData({
               ...data,
               FarmTime: newFarmTime,
-              FarmReward: data.FarmReward + elapsed * 0.1,
+              FarmReward: (data.FarmReward || 0) + (elapsed || 0) * 0.1,
               LastFarmActiveTime: currentTime,
             });
             setButtonText("Farming...");
@@ -89,7 +90,7 @@ const Home = () => {
             setUserData((prevState) => ({
               ...prevState,
               FarmTime: 0,
-              FarmReward: prevState.FarmReward + prevState.FarmTime * 0.1,
+              FarmReward: (prevState.FarmReward || 0) + (prevState.FarmTime || 0) * 0.1,
               LastFarmActiveTime: currentTime,
             }));
             setButtonText("Claim");
@@ -97,7 +98,7 @@ const Home = () => {
             setUserData((prevState) => ({
               ...prevState,
               FarmTime: newFarmTime,
-              FarmReward: prevState.FarmReward + elapsed * 0.1,
+              FarmReward: (prevState.FarmReward || 0) + (elapsed || 0) * 0.1,
               LastFarmActiveTime: currentTime,
             }));
           }
@@ -144,7 +145,7 @@ const Home = () => {
           navigator.vibrate(500); // Vibrate for 500ms
         }
         try {
-          const newFarmBalance = userData.FarmBalance + userData.FarmReward;
+          const newFarmBalance = (userData.FarmBalance || 0) + (userData.FarmReward || 0);
           const newUserData = {
             ...userData,
             FarmBalance: newFarmBalance,
@@ -173,6 +174,8 @@ const Home = () => {
     );
   }
 
+  const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
+
   return (
     <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-4">
       <div className="relative mb-3 pb-">
@@ -181,7 +184,7 @@ const Home = () => {
       <div className="flex flex-row justify-between items-center space-x-4">
         <p className="text-zinc-400 font-bold text-xl">HI, {userName}</p>
         <p className="text-golden-moon font-bold text-xl">
-          {userData && userData.FarmBalance !== undefined ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
+          {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
         </p>
       </div>
 
@@ -190,7 +193,7 @@ const Home = () => {
         <div className="flex items-center justify-center space-x-2">
           <img aria-hidden="true" alt="team-icon" src={coin} className="mr-2" width="25" height="5" />
           <p className="text-4xl font-normal text-primary">
-            {userData && userData.FarmReward !== undefined ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
+            {userData && isValidNumber(userData.FarmReward) ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
           </p>
         </div>
         <p className="font-extrabold text-golden-moon"><FormattedTime time={userData?.FarmTime || 0}/></p>
