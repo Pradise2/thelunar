@@ -25,8 +25,8 @@ const Tasks = () => {
     { id: 2, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/11" },
     { id: 3, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/12" },
     { id: 4, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/15" },
-    { id: 5, title: 'Retweet, comment and like tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815147922029199429?t=-waUnThgS_cwOvMibbqhsg&s=19" },
-    { id: 6, title: 'Retweet, comment and like tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815378630198841422?s=19" },
+    { id: 5, title: 'Retweet, comment tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815147922029199429?t=-waUnThgS_cwOvMibbqhsg&s=19" },
+    { id: 6, title: 'Retweet, like tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815378630198841422?s=19" },
     { id: 7, title: 'Subscribe to YouTube', reward: 1500, link: "https://youtube.com/@thelunarcoinofficial?si=qQttWxKSGuQpuoim"}, 
     ];
 
