@@ -181,7 +181,7 @@ const Home = () => {
       <div className="flex flex-row justify-between items-center space-x-4">
         <p className="text-zinc-400 font-bold text-xl">HI, {userName}</p>
         <p className="text-golden-moon font-bold text-xl">
-          {userData ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
+          {userData && userData.FarmBalance !== undefined ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
         </p>
       </div>
 
@@ -190,10 +190,10 @@ const Home = () => {
         <div className="flex items-center justify-center space-x-2">
           <img aria-hidden="true" alt="team-icon" src={coin} className="mr-2" width="25" height="5" />
           <p className="text-4xl font-normal text-primary">
-            {userData && userData.FarmReward != null ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
+            {userData && userData.FarmReward !== undefined ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
           </p>
         </div>
-        <p className="font-extrabold text-golden-moon"><FormattedTime time={userData?.FarmTime}/></p>
+        <p className="font-extrabold text-golden-moon"><FormattedTime time={userData?.FarmTime || 0}/></p>
         <div className="space-y-4 w-full flex items-center flex-col">
           <button
             className={`text-white hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-zinc-800 bg-opacity-70" : "bg-gradient-to-r from-golden-moon"}`}
