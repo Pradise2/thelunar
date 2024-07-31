@@ -1,38 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { PulseLoader, ClipLoader } from 'react-spinners';
-import FormattedTime from '../Component/FormattedTime';
-import { addUserToHome, getUserFromHome } from '../utils/firestoreFunctions';
-import './Home.css'; // Make sure to import the CSS file
-import coin from './logo.png';
-import RewardCard from '../Component/RewardCard';
 import Footer from '../Component/Footer';
-import './bg.css'
+import { addUserToFarm, getUserFromFarm } from '../utils/firestoreFunctions';
+import FormattedTime from '../Component/FormattedTime';
+import './bg.css';
+import { ClipLoader } from 'react-spinners';
+import { motion, AnimatePresence } from 'framer-motion';
+import RCFarm from '../Component/RCFarm';
+import coin from './logo.png';
 
-const Home = () => {
+const Farm = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("7437373");
+  const [homeData, setHomeData] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const [buttonText, setButtonText] = useState("Start");
+  const [showRCFarm, setShowRCFarm] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showTapButton, setShowTapButton] = useState(false);
-  const [showMorrButton, setShowMorrButton] = useState(false);
-  const [clickCount, setClickCount] = useState(0);
-  const [isVibrating, setIsVibrating] = useState(false); // State for vibration
-  const [showRewardCard, setShowRewardCard] = useState(false); // State to control RewardCard visibility
-
-  const tapButtonShowCount = 12; // Show TAP-TAP-TAP button after 3 clicks
-  const morrButtonShowCount = 20; // Show MORRR!!! button after 6 clicks
 
   useEffect(() => {
-    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
       const { WebApp } = window.Telegram;
-      
-      // Expand the WebApp
       WebApp.expand();
-  
       const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
+        setUserName(user.username);
       } else {
         console.error('User data is not available.');
       }
@@ -40,23 +32,46 @@ const Home = () => {
       console.error('Telegram WebApp script is not loaded.');
     }
   }, []);
-  
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const data = await getUserFromHome(userId);
-      if (data) {
-        setUserData(data);
-      } else {
-        const initialData = {
-          HomeBalance: 0,
-          TapPoint: 1000,
-          TapTime: 300,
-          TapClaim: 0,
-          LastActiveTime: Math.floor(Date.now() / 1000),
-        };
-        await addUserToHome(userId, initialData);
-        setUserData(initialData);
+      try {
+        const data = await getUserFromFarm(userId);
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (data) {
+          const elapsed = currentTime - data.LastFarmActiveTime;
+          const newFarmTime = data.FarmTime - elapsed;
+          if (newFarmTime <= 0) {
+            setUserData({
+              ...data,
+              FarmTime: 0,
+              FarmReward: data.FarmReward + data.FarmTime * 0.1,
+              LastFarmActiveTime: currentTime,
+            });
+            setButtonText("Claim");
+          } else {
+            setUserData({
+              ...data,
+              FarmTime: newFarmTime,
+              FarmReward: data.FarmReward + elapsed * 0.1,
+              LastFarmActiveTime: currentTime,
+            });
+            setButtonText("Farming...");
+          }
+        } else {
+          const initialData = {
+            FarmBalance: 0,
+            FarmTime: 60,
+            FarmReward: 0,
+            LastFarmActiveTime: currentTime,
+          };
+          await addUserToFarm(userId, initialData);
+          setUserData(initialData);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -64,208 +79,138 @@ const Home = () => {
   }, [userId]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (userData) {
-        const currentTime = Math.floor(Date.now() / 1000);
-        const elapsed = currentTime - userData.LastActiveTime;
-
-        if (elapsed > 0) {
-          const newTapTime = userData.TapTime - elapsed;
-          if (newTapTime <= 0) {
+    let interval;
+    if (buttonText === "Farming...") {
+      interval = setInterval(() => {
+        if (userData) {
+          const currentTime = Math.floor(Date.now() / 1000);
+          const elapsed = currentTime - userData.LastFarmActiveTime;
+          const newFarmTime = userData.FarmTime - elapsed;
+          if (newFarmTime <= 0) {
             setUserData((prevState) => ({
               ...prevState,
-              TapTime: 300,
-              TapPoint: 1000,
-              LastActiveTime: currentTime,
+              FarmTime: 0,
+              FarmReward: prevState.FarmReward + prevState.FarmTime * 0.1,
+              LastFarmActiveTime: currentTime,
             }));
+            setButtonText("Claim");
           } else {
             setUserData((prevState) => ({
               ...prevState,
-              TapTime: newTapTime,
-              LastActiveTime: currentTime,
+              FarmTime: newFarmTime,
+              FarmReward: prevState.FarmReward + elapsed * 0.1,
+              LastFarmActiveTime: currentTime,
             }));
           }
         }
-      }
-    }, 1000);
+      }, 1000);
+    }
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [userData]);
+    return () => clearInterval(interval);
+  }, [buttonText, userData]);
 
   useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      if (userId) {
-        addUserToHome(userId, userData);
-        e.preventDefault();
-        e.returnValue = '';
+    const saveUserData = async () => {
+      if (userId && userData) {
+        await addUserToFarm(userId, userData);
       }
+    };
+
+    const handleBeforeUnload = (e) => {
+      saveUserData();
+      e.preventDefault();
+      e.returnValue = '';
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
+    const saveInterval = setInterval(saveUserData, 10000);
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      if (userId && userData) {
-        addUserToHome(userId, userData);
-      }
+      clearInterval(saveInterval);
+      saveUserData();
     };
   }, [userId, userData]);
 
-  const handleTap = () => {
-    // Check if TapPoint is greater than 0
-    if (userData.TapPoint > 0) {
-      // Trigger vibration
-      if (navigator.vibrate) {
-        navigator.vibrate(100); // Vibrate for 100ms
-      }
-  
-      // Update TapPoint and TapClaim
+  const handleButtonClick = async () => {
+    if (buttonText === "Start") {
+      setButtonText("Farming...");
       setUserData((prevState) => ({
         ...prevState,
-        TapPoint: prevState.TapPoint - 1,
-        TapClaim: prevState.TapClaim + 1,
+        LastFarmActiveTime: Math.floor(Date.now() / 1000),
       }));
-  
-      // Increment click count and show buttons
-      setClickCount((prevCount) => {
-        const newCount = prevCount + 1;
-  
-        // Show the TAP-TAP-TAP button after the specified number of clicks
-        if (newCount % tapButtonShowCount === 0) {
-          setShowTapButton(true);
-          setTimeout(() => setShowTapButton(false), 600);
+    } else if (buttonText === "Claim") {
+      if (userData?.FarmReward > 0) {
+        if (navigator.vibrate) {
+          navigator.vibrate(500); // Vibrate for 500ms
         }
-  
-        // Show the MORRR!!! button after the specified number of clicks
-        if (newCount % morrButtonShowCount === 0) {
-          setShowMorrButton(true);
-          setTimeout(() => setShowMorrButton(false), 600);
+        try {
+          const newFarmBalance = userData.FarmBalance + userData.FarmReward;
+          const newUserData = {
+            ...userData,
+            FarmBalance: newFarmBalance,
+            FarmReward: 0,
+            FarmTime: 60,
+          };
+          await addUserToFarm(userId, newUserData);
+          setUserData(newUserData);
+          setShowRCFarm(true);
+          setTimeout(() => setShowRCFarm(false), 2000);
+          setButtonText("Start");
+        } catch (error) {
+          console.error('Error claiming reward:', error);
         }
-  
-        return newCount;
-      });
-
-      // Trigger vibration animation
-      setIsVibrating(true);
-      setTimeout(() => setIsVibrating(false), 100); // Stop vibration after the animation duration
+      }
     }
   };
-
-  const handleClaim = () => {
-    if (userData.TapClaim > 0) {
-    
-    // Vibrate when claiming
-    if (navigator.vibrate) {
-      navigator.vibrate(500); // Vibrate for 500ms
-    }
-
-    // Show RewardCard and update userData
-    setUserData((prevState) => ({
-      ...prevState,
-      HomeBalance: prevState.HomeBalance + prevState.TapClaim,
-      TapClaim: 0,
-    }));
-    setShowRewardCard(true);
-
-    // Hide RewardCard after 2 seconds
-    setTimeout(() => setShowRewardCard(false), 2000);
-  }
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-cover text-white p-4">
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-white text-4xl font-normal">
-            <ClipLoader
-              color="#FFD700" // Golden color
-              size={60}
-              speedMultiplier={1}
-            />
-          </h1>
+          <ClipLoader color="#FFD700" size={60} speedMultiplier={1} />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-cover  bg-gradient-to-b from-black to-zinc-900 min-h-screen text-white flex flex-col items-center p-4 space-y-4">
-      <div className="bg-zinc-800 bg-opacity-70 rounded-lg p-4 w-full max-w-md text-center">
-        <p className="text-zinc-500">Your Lunar Tokens</p>
-        <p className="text-4xl font-normal">{userData?.HomeBalance.toLocaleString()} <span className="text-golden-moon">LAR</span></p>
-      </div>
-      <div className="text-center">
-        <p>Never stop tapping, every second matters</p>
-        <p>As the moon drifts further, every tap gets you closer!<span role="img" aria-label="thumbs up">👍</span></p>
-      </div>
-
-      <div className="flex space-x-4">
-        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-9 py-2 text-center">
-          <p className="text-golden-moon">{userData?.TapPoint} taps </p>
-        </div>
-        <div className="bg-zinc-800 bg-opacity-70 rounded-xl px-7 py-2 text-center flex items-center space-x-2">
-          <span className="text-yellow-900">⏰</span>
-          <p className="text-red-700"><FormattedTime time={userData?.TapTime}/></p>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-4">
+    
       <div className="relative mb-3 pb-">
-        <motion.img
-          id="click"
-          onClick={handleTap}
-          src={coin}
-          alt="LAR Coin"
-          className="w-60 h-58 rounded-full"
-          animate={isVibrating ? { x: [0, -10, 0, 10, 0] } : {y:[0, -10, 0, 10, 0]}}
-          transition={{ duration: 0.2 }}
-        />
-        {showTapButton && (
-          <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 pb-8 button-animation move-tap">
-            <button className="bg-white bg-opacity-70 text-black font-normal px-4 py-2 rounded-full shadow-lg">TAP-TAP-TAP</button>
-          </div>
-        )}
-        {showMorrButton && (
-          <div className="absolute  top-0 left-0 -translate-x-1/4 -translate-y-1/4 pt-3 ml-0 button-animation move-morr">
-            <button className="bg-white bg-opacity-70 text-black font-normal px-4 py-2 rounded-full shadow-lg">MORRR!!!</button>
-          </div>
-        )}
+        <img src={coin} alt="LAR Coin" className="w-60 h-58 rounded-full" />
       </div>
-      <div className="bg-zinc-800 bg-opacity-70 rounded-xl p-2 w-full max-w-md flex text-sm font-normal justify-between items-center py-5">
-        <p className="px-3 text-xl font-normal">{userData?.TapClaim.toLocaleString()} <span className="text-golden-moon px-2 text-xl font-normal">LAR</span></p>
-        <button className="bg-golden-moon p-2 px-3 rounded-lg" onClick={handleClaim}>
-          Claim
-        </button>
-      </div>
+      <div className="flex flex-row justify-between items-center space-x-4">
+  <p className="text-zinc-400 font-bold text-xl">HI, {userName}</p>
+  <p className="text-golden-moon font-bold text-xl">
+    {userData.FarmBalance.toLocaleString()} <span className="text-golden-moon"></span>
+  </p>
+</div>
 
-      <AnimatePresence>
-        {showRewardCard && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
-            onClick={() => setShowRewardCard(false)} // Click anywhere to close RewardCard
+      <div className="bg-zinc-800 bg-opacity-70 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
+        <p className="text-zinc-400 text-xl ">Your Farming</p>
+        <div className="flex items-center justify-center space-x-2">
+          <img aria-hidden="true" alt="team-icon" src={coin} className="mr-2" width="25" height="5" />
+          <p className="text-4xl font-normal text-primary">
+            {userData && userData.FarmReward != null ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
+          </p>
+        </div>
+        <p className="font-extrabold text-golden-moon"><FormattedTime time={userData?.FarmTime}/></p>
+        <div className="space-y-4 w-full flex items-center flex-col">
+          <button
+            className={`text-white hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-zinc-800 bg-opacity-70" : "bg-gradient-to-r from-golden-moon"}`}
+            onClick={handleButtonClick}
           >
-            <RewardCard onClose={() => setShowRewardCard(false)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {buttonText}
+          </button>
+        </div>
+      </div>
 
-      <div className="w-full max-w-md fixed bottom-0 left-0 flex justify-around bg-zinc-900 py-1">
-<Footer />
-</div>
-</div>
-);
+      <div className="w-full max-w-md bg-zinc-900 fixed bottom-0 left-0 flex justify-around py-1">
+        <Footer />
+      </div>
+    </div>
+  );
 };
 
-export default Home;
+export default Farm;

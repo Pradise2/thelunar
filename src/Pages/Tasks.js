@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Component/Footer';
 import './Spinner.css';
 import { ClipLoader } from 'react-spinners';
-import { addUserTasks, getUserTasks, updateHomeBalance, getUserFromHome } from '../utils/firestoreFunctions';
+import { addUserTasks, getUserTasks, updateFarmBalance, getUserFromFarm } from '../utils/firestoreFunctions';
 import './bg.css';
 import RCTasks from '../Component/RCTasks';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from './logo.png'
+import logo from './logo.png';
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("743737380"); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState("001"); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
-  const [homeData, setHomeData] = useState(null);
+  const [farmData, setFarmData] = useState(null);
   const [taskReadyToClaim, setTaskReadyToClaim] = useState(null);
   const [showRCTasks, setShowRCTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null); // New state for selected task
@@ -21,40 +21,56 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true); // New state for loading
 
   const tasks = [
-    { id: 1, title: 'Invite 5 Friends', reward: 15000, link: "https://youtube.com" },
-    { id: 2, title: 'Complete Profile', reward: 5000, link: "https://example.com" },
-    { id: 3, title: 'Join Community', reward: 10000, link: "https://example.com" },
-  ];
-
-  
+    { id: 1, title: 'Follow Community', reward: 1500, link: "https://t.me/lunarcoincommunity" },
+    { id: 2, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/11" },
+    { id: 3, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/12" },
+    { id: 4, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/15" },
+    { id: 5, title: 'Retweet, comment and like tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815147922029199429?t=-waUnThgS_cwOvMibbqhsg&s=19" },
+    { id: 6, title: 'Retweet, comment and like tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815378630198841422?s=19" },
+    { id: 7, title: 'Subscribe to YouTube', reward: 1500, link: "https://youtube.com/@thelunarcoinofficial?si=qQttWxKSGuQpuoim"}, 
+    ];
 
   useEffect(() => {
-    // Check if Telegram WebApp is available
-    if (window.Telegram && window.Telegram.WebApp) {
-      const { WebApp } = window.Telegram;
-      
-      // Expand the WebApp
-      WebApp.expand();
-  
-      const user = WebApp.initDataUnsafe?.user;
-      if (user) {
-        setUserId(user.id);
+    const initializeUserId = () => {
+      if (window.Telegram && window.Telegram.WebApp) {
+        const { WebApp } = window.Telegram;
+        WebApp.expand();
+        const user = WebApp.initDataUnsafe?.user;
+        if (user) {
+          setUserId(user.id);
+        } else {
+          console.error('User data is not available.');
+        }
       } else {
-        console.error('User data is not available.');
+        console.error('Telegram WebApp script is not loaded.');
       }
-    } else {
-      console.error('Telegram WebApp script is not loaded.');
-    }
+    };
+    initializeUserId();
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       try {
         const data = await getUserTasks(userId);
         if (data) {
-          setUserData(data);
-          if (data.taskFilter) {
-            setTaskFilter(data.taskFilter);
+          let updatedData = { ...data };
+          let newTaskAdded = false;
+          tasks.forEach(task => {
+            if (!updatedData.TasksComplete.hasOwnProperty(task.id)) {
+              updatedData.TasksComplete[task.id] = false;
+              newTaskAdded = true;
+            }
+            if (!updatedData.TasksStatus.hasOwnProperty(task.id)) {
+              updatedData.TasksStatus[task.id] = 'start';
+              newTaskAdded = true;
+            }
+          });
+          if (newTaskAdded) {
+            await addUserTasks(userId, updatedData);
+          }
+          setUserData(updatedData);
+          if (updatedData.taskFilter) {
+            setTaskFilter(updatedData.taskFilter);
           }
         } else {
           const initialData = {
@@ -62,29 +78,35 @@ const Tasks = () => {
             TasksStatus: {},
           };
           tasks.forEach(task => {
-            initialData.TasksComplete[task.id] = false; // Set each task's TasksComplete to false initially
-            initialData.TasksStatus[task.id] = 'start'; // Set each task's TasksStatus to 'start' initially
+            initialData.TasksComplete[task.id] = false;
+            initialData.TasksStatus[task.id] = 'start';
           });
           await addUserTasks(userId, initialData);
           setUserData(initialData);
         }
-        setLoading(false); // Data fetching completed
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false); // Data fetching completed even if there is an error
+        setLoading(false);
       }
     };
-
-    fetchData();
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   useEffect(() => {
-    const fetchHomeData = async () => {
-      const data = await getUserFromHome(userId);
-      setHomeData(data);
+    const fetchFarmData = async () => {
+      try {
+        const data = await getUserFromFarm(userId);
+        setFarmData(data);
+      } catch (error) {
+        console.error('Error fetching farm data:', error);
+      }
     };
-
-    fetchHomeData();
+    if (userId) {
+      fetchFarmData();
+    }
   }, [userId]);
 
   useEffect(() => {
@@ -117,12 +139,10 @@ const Tasks = () => {
   const handleClaimClick = async (taskId, reward) => {
     const task = tasks.find(t => t.id === taskId);
 
-    // Vibrate when claiming
     if (navigator.vibrate) {
-      navigator.vibrate(500); // Vibrate for 500ms
+      navigator.vibrate(500);
     }
 
-    // Update TasksComplete to true for the clicked task
     setUserData(prevData => ({
       ...prevData,
       TasksComplete: {
@@ -135,37 +155,26 @@ const Tasks = () => {
       }
     }));
 
-    // Update HomeBalance with the reward
     try {
-      const updatedHomeData = await getUserFromHome(userId); // Fetch latest home data to ensure up-to-date balance
-      const newHomeBalance = updatedHomeData.HomeBalance + reward;
-      await updateHomeBalance(userId, newHomeBalance);
-      setHomeData(prevData => ({
+      const updatedHomeData = await getUserFromFarm(userId);
+      const newFarmBalance = updatedHomeData.FarmBalance + reward;
+      await updateFarmBalance(userId, newFarmBalance);
+      setFarmData(prevData => ({
         ...prevData,
-        HomeBalance: newHomeBalance,
+        FarmBalance: newFarmBalance,
       }));
-      setSelectedTask(task); // Set the selected task
+      setSelectedTask(task);
       setShowRCTasks(true);
-
-      // Show "Go" button after claim is clicked
       setShowGoButton(true);
-
-      // Hide RewardCard after 2 seconds
       setTimeout(() => setShowRCTasks(false), 2000);
-
-      console.log(`HomeBalance updated with ${reward} LAR`);
     } catch (error) {
-      console.error('Error updating HomeBalance:', error);
+      console.error('Error updating FarmBalance:', error);
     }
   };
 
   const handleStartClick = (taskId, link) => {
     setLoadingTask(taskId);
-
-    // Open the link in a new tab
     window.open(link, '_blank');
-
-    // Simulate loading delay
     setTimeout(() => {
       setLoadingTask(null);
       setTaskReadyToClaim(taskId);
@@ -176,7 +185,7 @@ const Tasks = () => {
           [taskId]: 'claim',
         }
       }));
-    }, 5000); // Simulate loading time, change as needed
+    }, 5000);
   };
 
   const filteredTasks = tasks.filter(task => {
@@ -194,7 +203,7 @@ const Tasks = () => {
         <div className="flex flex-col items-center space-y-4">
           <h1 className="text-white text-4xl font-normal">
             <ClipLoader
-              color="#FFD700" // Golden color
+              color="#FFD700"
               size={60}
               speedMultiplier={1}
             />
@@ -247,56 +256,55 @@ const Tasks = () => {
                     ) : (
                       'Start'
                     )}
-                    </button>
-                  )}
-                  {userData.TasksStatus[task.id] === 'claim' && (
-                    <button 
-                      onClick={() => handleClaimClick(task.id, task.reward)} 
-                      className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                    >
-                      Claim
-                    </button>
-                  )}
-                  {userData.TasksStatus[task.id] === 'completed' && (
-                    <button 
-                      className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                      disabled
-                    >
-                      Completed
-                    </button>
-                  )}
-                  {showGoButton && userData.TasksStatus[task.id] === 'completed' && (
-                    <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
-                      Go
-                    </a>
-                  )}
-                </div>
+                  </button>
+                )}
+                {userData.TasksStatus[task.id] === 'claim' && (
+                  <button 
+                    onClick={() => handleClaimClick(task.id, task.reward)} 
+                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                  >
+                    Claim
+                  </button>
+                )}
+                {userData.TasksStatus[task.id] === 'completed' && (
+                  <button 
+                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+                    disabled
+                  >
+                    Completed
+                  </button>
+                )}
+                {showGoButton && userData.TasksStatus[task.id] === 'completed' && (
+                  <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
+                    Go
+                  </a>
+                )}
               </div>
-            ))}
-          </div>
-        </div>
-  
-        <AnimatePresence>
-          {showRCTasks && selectedTask && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
-              onClick={() => setShowRCTasks(false)} // Click anywhere to close RewardCard
-            >
-              <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-  
-        <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
-          <Footer />
+            </div>
+          ))}
         </div>
       </div>
-    );
-  };
-  
-  export default Tasks;
-  
+
+      <AnimatePresence>
+        {showRCTasks && selectedTask && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+            onClick={() => setShowRCTasks(false)}
+          >
+            <RCTasks onClose={() => setShowRCTasks(false)} task={selectedTask} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default Tasks;

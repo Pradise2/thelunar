@@ -6,10 +6,10 @@ const firebaseAdmin = require('firebase-admin');
 const functions = require('firebase-functions');
 
 const app = express();
-const token = process.env.TOKEN || '7109694153:AAFe_7FE0huybS3EV17KE9taivyTQS11zeI';
+const token = process.env.TOKEN || '7233165030:AAEO2yudL-ypxo3k3Z1fyxeld25XeS39JWc';
 const bot = new Telegraf(token);
 // Web App Link
-const web_link = 'https://thelunarcoin.vercel.app/';
+const web_link = 'https://lunarapp.thelunarcoin.com//';
 
 // Start Handler
 bot.start(async (ctx) => {
@@ -21,22 +21,22 @@ bot.start(async (ctx) => {
     const userName = user.username ? `@${user.username.replace(/[-.!]/g, '\\$&')}` : user.first_name;
 
     const messageText = `
-*Welcome 🎉, ${userName}* Future Astronaut!.
+*Hey, ${userName}* Prepare for an out-of-this-world adventure! 🌌🚀
 
-You are ready to explore the Moon like never before! 🚀
+TheLunarCoin Power Tap mini-game has just landed on Telegram, and it’s going to be epic!
 
-🤩Lunar tap-to-earn game has just touched down on Telegram! Get set to be amazed! 🤩
+⚡ Get ready to be hooked! ⚡
 
-🤑 Earn Lunar tokens, tackle epic challenges, and uncover incredible rewards. 
+🤑 Farm tokens, conquer challenges, and score insane loot.
 
-🔗 Team up for greater glory! Invite your friends to double the fun and double the tokens! 
+💥 Form squads and invite your crew for double the fun (and double the tokens)!
 
-🌔 Lunar isn't just a game, it's your gateway to building a thriving lunar colony. 
+With TheLunarCoin, mastering cryptocurrency is a breeze. From wallets to trading, earning, and cards, we’ve got everything you need to dominate the cryptoverse!
 
-🧠 Strategize, 🌍 explore, and 💰 earn all from your Telegram app.
+🚀 Let the lunar adventure begin! 🚀
 
-*🚀Your Lunar adventure starts now!🚀*
-        `;
+* Lunar Token is not a virtual currency.*
+    `;
 
     await ctx.replyWithMarkdown(messageText, {
       reply_markup: {

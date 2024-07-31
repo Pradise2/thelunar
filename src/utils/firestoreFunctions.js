@@ -19,12 +19,6 @@ export const getUserFromHome = async (userId) => {
   }
 };
 
-export const updateHomeBalance = async (userId, newBalance) => {
-  const userRef = doc(db, "Home", userId.toString());
-  await updateDoc(userRef, {
-    HomeBalance: newBalance,
-  });
-};
 
 // Tasks Collection Functions
 export const addUserTasks = async (userId, tasks) => {
@@ -58,6 +52,13 @@ export const getUserFromFarm = async (userId) => {
     console.log("No such document!");
     return null;
   }
+};
+
+export const updateFarmBalance = async (userId, newBalance) => {
+  const userRef = doc(db, "Farm", userId.toString());
+  await updateDoc(userRef, {
+    FarmBalance: newBalance,
+  });
 };
 
 // Squad Collection Functions
